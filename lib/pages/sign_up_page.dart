@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
-import 'package:galonku/pages/sign_up_page.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
   bool _obscureText = true;
 
   @override
@@ -25,8 +24,8 @@ class _SignInPageState extends State<SignInPage> {
           children: [
             header(context),
             Container(
-              padding: EdgeInsets.all(16),
-              margin: EdgeInsets.only(top: 30),
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.only(top: 30),
               decoration: BoxDecoration(
                 border: Border.all(
                   color: Colors.grey.withValues(alpha: 0.5),
@@ -36,11 +35,13 @@ class _SignInPageState extends State<SignInPage> {
               ),
               child: Column(
                 children: [
+                  nameInput(context),
+                  const SizedBox(height: 20),
                   emailInput(context),
                   const SizedBox(height: 20),
                   passwordInput(context),
                   const SizedBox(height: 30),
-                  const SignInButton(),
+                  const SignUpButton(),
                 ],
               ),
             ),
@@ -59,19 +60,61 @@ class _SignInPageState extends State<SignInPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            AppLocalizations.of(context)!.noAccount,
+            AppLocalizations.of(context)!.haveAccount,
             style: primaryTextStyle.copyWith(fontSize: 12),
           ),
           const SizedBox(width: 5),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/sign-up');
+              Navigator.pop(context);
             },
             child: Text(
-              AppLocalizations.of(context)!.register,
+              AppLocalizations.of(context)!.login,
               style: headingBlueTextStyle.copyWith(
                 fontSize: 12,
                 fontWeight: medium,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  SizedBox nameInput(BuildContext context) {
+    return SizedBox(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.name,
+            style: primaryTextStyle.copyWith(fontSize: 16, fontWeight: medium),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey.withValues(alpha: 0.5),
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Row(
+                children: [
+                  Icon(Icons.person, color: primaryColor, size: 24),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: TextField(
+                      style: primaryTextStyle,
+                      decoration: InputDecoration.collapsed(
+                        hintText: AppLocalizations.of(context)!.name,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -89,10 +132,10 @@ class _SignInPageState extends State<SignInPage> {
             AppLocalizations.of(context)!.email,
             style: primaryTextStyle.copyWith(fontSize: 16, fontWeight: medium),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Container(
             height: 50,
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               border: Border.all(
                 color: Colors.grey.withValues(alpha: 0.5),
@@ -104,7 +147,7 @@ class _SignInPageState extends State<SignInPage> {
               child: Row(
                 children: [
                   Icon(Icons.email, color: primaryColor, size: 24),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: TextField(
                       style: primaryTextStyle,
@@ -131,10 +174,10 @@ class _SignInPageState extends State<SignInPage> {
             AppLocalizations.of(context)!.password,
             style: primaryTextStyle.copyWith(fontSize: 16, fontWeight: medium),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Container(
             height: 50,
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               border: Border.all(
                 color: Colors.grey.withValues(alpha: 0.5),
@@ -146,7 +189,7 @@ class _SignInPageState extends State<SignInPage> {
               child: Row(
                 children: [
                   Icon(Icons.lock, color: primaryColor, size: 24),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: TextField(
                       style: primaryTextStyle,
@@ -203,7 +246,7 @@ class _SignInPageState extends State<SignInPage> {
             ),
           ),
           Text(
-            AppLocalizations.of(context)!.subSignIn,
+            AppLocalizations.of(context)!.subSignUp,
             style: secondaryTextStyle.copyWith(fontSize: 16),
           ),
         ],
@@ -212,8 +255,8 @@ class _SignInPageState extends State<SignInPage> {
   }
 }
 
-class SignInButton extends StatelessWidget {
-  const SignInButton({super.key});
+class SignUpButton extends StatelessWidget {
+  const SignUpButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -231,7 +274,7 @@ class SignInButton extends StatelessWidget {
           ),
         ),
         child: Text(
-          AppLocalizations.of(context)!.signIn,
+          AppLocalizations.of(context)!.signUp,
           style: headingTextStyle.copyWith(fontSize: 16, fontWeight: medium),
         ),
       ),

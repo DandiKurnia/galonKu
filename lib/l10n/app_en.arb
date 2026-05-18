@@ -1,0 +1,14 @@
+{
+  "greeting": "Welcome",
+  "subSignIn": "Sign in to Galonku to continue",
+  "subSignUp": "Complete your profile to create a Galonku account",
+  "signIn": "Sign In",
+  "signUp": "Sign Up",
+  "noAccount": "Don't have Account?",
+  "register": "Sign Up Now",
+  "haveAccount": "Already have Account?",
+  "login": "Sign In Now",
+  "email": "Email Address",
+  "password": "Password",
+  "name": "Full Name"
+}

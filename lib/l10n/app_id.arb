@@ -1,0 +1,14 @@
+{
+  "greeting": "Selamat Datang",
+  "subSignIn": "Masuk ke Galonku untuk melanjutkan",
+  "subSignUp": "Lengkapi data diri Anda untuk membuat akun Galonku",
+  "signIn": "Masuk",
+  "signUp": "Daftar",
+  "noAccount": "Tidak Punya Akun?",
+  "register": "Daftar Sekarang",
+  "haveAccount": "Punya Akun?",
+  "login": "Masuk Sekarang",
+  "email": "Email Address",
+  "password": "Password",
+  "name": "Nama Lengkap"
+}
