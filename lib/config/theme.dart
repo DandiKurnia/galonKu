@@ -15,6 +15,7 @@ Color backgroundColor3 = Color(0xffE5E7EB);
 Color primaryTextColor = Color(0xff111827);
 Color secondaryTextColor = Color(0xff6B7280);
 Color transparentColor = Colors.transparent;
+Color whiteColor = Color(0xffFFFFFF);
 
 TextStyle primaryTextStyle = GoogleFonts.inter(color: primaryTextColor);
 

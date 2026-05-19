@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:galonku/pages/home/home_page.dart';
 import 'package:galonku/pages/sign_in_page.dart';
 import 'package:galonku/pages/splash_page.dart';
 import 'package:galonku/pages/sign_up_page.dart';
+import 'package:galonku/pages/home/main_page.dart';
 
 class AppRoute {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -16,6 +18,12 @@ class AppRoute {
       case '/sign-up':
         page = const SignUpPage();
         break;
+      case '/main':
+        page = const MainPage();
+        break;
+      case '/home':
+        page = const HomePage();
+        break;
       default:
         return null;
     }
@@ -24,10 +32,7 @@ class AppRoute {
       settings: settings,
       pageBuilder: (context, animation, secondaryAnimation) => page,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(
-          opacity: animation,
-          child: child,
-        );
+        return FadeTransition(opacity: animation, child: child);
       },
     );
   }

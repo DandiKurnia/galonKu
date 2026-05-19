@@ -43,4 +43,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get name => 'Full Name';
+
+  @override
+  String get dashboardGreeting => 'Hello';
+
+  @override
+  String get dashboardSub => 'Want to fill your gallon today?';
+
+  @override
+  String get tutorial => 'How to Use';
+
+  @override
+  String get pickLocation => 'Pick Location';
+
+  @override
+  String get pickMesin => 'Pick Machine';
+
+  @override
+  String get payment => 'Payment';
+
+  @override
+  String get fillUp => 'Fill Up';
+
+  @override
+  String get scanCode => 'Scan QR Code';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get findAll => 'Find All';
 }

@@ -10,5 +10,16 @@
   "login": "Sign In Now",
   "email": "Email Address",
   "password": "Password",
-  "name": "Full Name"
+  "name": "Full Name",
+
+  "dashboardGreeting": "Hello",
+  "dashboardSub": "Want to fill your gallon today?",
+  "tutorial": "How to Use",
+  "pickLocation": "Pick Location",
+  "pickMesin": "Pick Machine",
+  "payment": "Payment",
+  "fillUp": "Fill Up",
+  "scanCode": "Scan QR Code",
+  "location": "Location",
+  "findAll" : "Find All"
 }
