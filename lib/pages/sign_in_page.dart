@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
-import 'package:galonku/pages/sign_up_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -222,7 +221,11 @@ class SignInButton extends StatelessWidget {
       width: double.infinity,
       child: TextButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/home',
+            (route) => false,
+          );
         },
         style: TextButton.styleFrom(
           backgroundColor: primaryColor,
