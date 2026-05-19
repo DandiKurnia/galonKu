@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-double defaultMargin = 20.0;
-double defaultPadding = 20.0;
 
 Color primaryColor = Color(0xff2F80ED);
 Color secondaryColor = Color(0xff56CCF2);

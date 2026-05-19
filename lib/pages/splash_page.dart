@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 
 class SplashPage extends StatefulWidget {
@@ -32,23 +33,23 @@ class _SplashPageState extends State<SplashPage> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 40),
+        margin: EdgeInsets.only(bottom: 40.h),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               'Isi Galon Jadi Lebih Mudah',
               style: headingTextStyle.copyWith(
-                fontSize: 16,
+                fontSize: 16.sp,
                 fontWeight: medium,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10.r),
               child: SizedBox(
-                width: 120,
-                height: 6,
+                width: 120.w,
+                height: 6.h,
                 child: LinearProgressIndicator(
                   valueColor: AlwaysStoppedAnimation(backgroundColor1),
                   backgroundColor: backgroundColor1.withValues(alpha: 0.3),
@@ -68,13 +69,13 @@ class _SplashPageState extends State<SplashPage> {
         children: [
           Image.asset(
             'assets/images/image_splash.png',
-            height: 100,
-            width: 100,
+            height: 100.h,
+            width: 100.w,
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           Text(
             'GalonKu',
-            style: headingTextStyle.copyWith(fontSize: 24, fontWeight: bold),
+            style: headingTextStyle.copyWith(fontSize: 24.sp, fontWeight: bold),
           ),
         ],
       ),
