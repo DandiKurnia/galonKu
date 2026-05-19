@@ -21,9 +21,6 @@ class AppRoute {
       case '/main':
         page = const MainPage();
         break;
-      case '/home':
-        page = const HomePage();
-        break;
       default:
         return null;
     }
