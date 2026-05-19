@@ -1,4 +1,5 @@
 {
+
   "greeting": "Selamat Datang",
   "subSignIn": "Masuk ke Galonku untuk melanjutkan",
   "subSignUp": "Lengkapi data diri Anda untuk membuat akun Galonku",
@@ -10,5 +11,16 @@
   "login": "Masuk Sekarang",
   "email": "Email Address",
   "password": "Password",
-  "name": "Nama Lengkap"
+  "name": "Nama Lengkap",
+
+  "dashboardGreeting": "Halo",
+  "dashboardSub": "Mau isi galon hari ini?",
+  "tutorial": "Cara Penggunaan",
+  "pickLocation": "Pilih Lokasi",
+  "pickMesin": "Pilih Mesin",
+  "payment": "Pembayaran",
+  "fillUp": "Isi Galon",
+  "scanCode": "Scan QR Code",
+  "location": "Lokasi Terdekat",
+  "findAll" : "Lihat Semua"
 }

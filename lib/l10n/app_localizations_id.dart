@@ -43,4 +43,34 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get name => 'Nama Lengkap';
+
+  @override
+  String get dashboardGreeting => 'Halo';
+
+  @override
+  String get dashboardSub => 'Mau isi galon hari ini?';
+
+  @override
+  String get tutorial => 'Cara Penggunaan';
+
+  @override
+  String get pickLocation => 'Pilih Lokasi';
+
+  @override
+  String get pickMesin => 'Pilih Mesin';
+
+  @override
+  String get payment => 'Pembayaran';
+
+  @override
+  String get fillUp => 'Isi Galon';
+
+  @override
+  String get scanCode => 'Scan QR Code';
+
+  @override
+  String get location => 'Lokasi Terdekat';
+
+  @override
+  String get findAll => 'Lihat Semua';
 }

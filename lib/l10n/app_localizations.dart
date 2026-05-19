@@ -169,6 +169,66 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Nama Lengkap'**
   String get name;
+
+  /// No description provided for @dashboardGreeting.
+  ///
+  /// In id, this message translates to:
+  /// **'Halo'**
+  String get dashboardGreeting;
+
+  /// No description provided for @dashboardSub.
+  ///
+  /// In id, this message translates to:
+  /// **'Mau isi galon hari ini?'**
+  String get dashboardSub;
+
+  /// No description provided for @tutorial.
+  ///
+  /// In id, this message translates to:
+  /// **'Cara Penggunaan'**
+  String get tutorial;
+
+  /// No description provided for @pickLocation.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih Lokasi'**
+  String get pickLocation;
+
+  /// No description provided for @pickMesin.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih Mesin'**
+  String get pickMesin;
+
+  /// No description provided for @payment.
+  ///
+  /// In id, this message translates to:
+  /// **'Pembayaran'**
+  String get payment;
+
+  /// No description provided for @fillUp.
+  ///
+  /// In id, this message translates to:
+  /// **'Isi Galon'**
+  String get fillUp;
+
+  /// No description provided for @scanCode.
+  ///
+  /// In id, this message translates to:
+  /// **'Scan QR Code'**
+  String get scanCode;
+
+  /// No description provided for @location.
+  ///
+  /// In id, this message translates to:
+  /// **'Lokasi Terdekat'**
+  String get location;
+
+  /// No description provided for @findAll.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat Semua'**
+  String get findAll;
 }
 
 class _AppLocalizationsDelegate
