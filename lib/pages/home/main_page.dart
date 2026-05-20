@@ -3,6 +3,7 @@ import 'package:galonku/config/theme.dart';
 import 'package:galonku/pages/home/home_page.dart';
 import 'package:galonku/pages/home/location_page.dart';
 import 'package:galonku/pages/home/profile_page.dart';
+import 'package:galonku/pages/home/scan_qr_page.dart';
 import 'package:galonku/pages/home/transaction_page.dart';
 import 'package:logger/logger.dart';
 
@@ -106,10 +107,21 @@ class _MainPageState extends State<MainPage> {
 
   FloatingActionButton scanButton() {
     return FloatingActionButton(
-      onPressed: () {},
+      onPressed: _onScanPressed,
       backgroundColor: primaryColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
       child: Icon(Icons.qr_code_scanner, color: backgroundColor1),
     );
+  }
+
+  Future<void> _onScanPressed() async {
+    final result = await Navigator.of(
+      context,
+    ).push<String>(MaterialPageRoute(builder: (_) => const ScanQrPage()));
+    if (!mounted || result == null) return;
+    logger.d('QR scan result: $result');
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Hasil scan: $result')));
   }
 }
