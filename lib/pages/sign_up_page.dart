@@ -24,28 +24,14 @@ class _SignUpPageState extends State<SignUpPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             header(context),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-              margin: EdgeInsets.only(top: 30.w),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey.withValues(alpha: 0.5),
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                children: [
-                  nameInput(context),
-                  SizedBox(height: 20.h),
-                  emailInput(context),
-                  SizedBox(height: 20.h),
-                  passwordInput(context),
-                  SizedBox(height: 30.h),
-                  SignUpButton(),
-                ],
-              ),
-            ),
+            SizedBox(height: 50.h),
+            nameInput(context),
+            SizedBox(height: 20.h),
+            emailInput(context),
+            SizedBox(height: 20.h),
+            passwordInput(context),
+            SizedBox(height: 30.h),
+            SignUpButton(),
             const Spacer(),
             footer(context),
           ],
@@ -56,7 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Container footer(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20.h),
+      margin: EdgeInsets.only(bottom: 40.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -233,23 +219,13 @@ class _SignUpPageState extends State<SignUpPage> {
   Container header(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(top: 80.h),
+      margin: EdgeInsets.only(top: 30.h),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey.withValues(alpha: 0.5),
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Image.asset('assets/images/image_splash.png', width: 85.w),
-          ),
           SizedBox(height: 12.h),
           Text(
-            AppLocalizations.of(context)!.greeting,
+            AppLocalizations.of(context)!.signUp,
             style: headingBlueTextStyle.copyWith(
               fontSize: 36.sp,
               fontWeight: bold,
