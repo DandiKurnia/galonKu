@@ -92,4 +92,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchLocation => 'Search for the nearest location ...';
+
+  @override
+  String get transactionAppbar => 'Transaction History';
+
+  @override
+  String get transactionTitle => 'Gallon Water (19L)';
+
+  @override
+  String transactionAmount(String count, String machine) {
+    return '$count Gallons | Machine $machine';
+  }
+
+  @override
+  String get statusTransaction => 'Completed';
+
+  @override
+  String get cancelTransaction => 'Cancelled';
+
+  @override
+  String get showDetail => 'Show Detail';
 }

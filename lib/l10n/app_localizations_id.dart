@@ -92,4 +92,24 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get searchLocation => 'Cari Lokasi terdekat ...';
+
+  @override
+  String get transactionAppbar => 'Riwayat Transaksi';
+
+  @override
+  String get transactionTitle => 'Air Galon (19L)';
+
+  @override
+  String transactionAmount(String count, String machine) {
+    return '$count Galon | Mesin $machine';
+  }
+
+  @override
+  String get statusTransaction => 'Selesai';
+
+  @override
+  String get cancelTransaction => 'Dibatalkan';
+
+  @override
+  String get showDetail => 'Lihat Detail';
 }

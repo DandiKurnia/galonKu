@@ -28,5 +28,19 @@
   "findAll" : "Find All",
 
   "tileAppbar": "Location",
-  "searchLocation": "Search for the nearest location ..."
+  "searchLocation": "Search for the nearest location ...",
+
+  "transactionAppbar": "Transaction History",
+  "transactionTitle": "Gallon Water (19L)",
+  "transactionAmount": "{count} Gallons | Machine {machine}",
+  "@transactionAmount": {
+    "placeholders": {
+      "count": { "type": "String" },
+      "machine": { "type": "String" }
+    }
+  },
+
+  "statusTransaction": "Completed",
+  "cancelTransaction": "Cancelled",
+  "showDetail": "Show Detail"
 }
