@@ -86,4 +86,10 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get findAll => 'Lihat Semua';
+
+  @override
+  String get tileAppbar => 'Pilih Lokasi';
+
+  @override
+  String get searchLocation => 'Cari Lokasi terdekat ...';
 }

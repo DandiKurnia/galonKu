@@ -46,3 +46,6 @@ app.*.map.json
 
 /prompChat/*
 /.claude/*
+
+# Environment variables
+.env

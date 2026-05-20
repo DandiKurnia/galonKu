@@ -26,5 +26,9 @@
   "fillUp": "Isi Galon",
   "scanCode": "Scan QR Code",
   "location": "Lokasi Terdekat",
-  "findAll" : "Lihat Semua"
+  "findAll" : "Lihat Semua",
+
+
+  "tileAppbar": "Pilih Lokasi",
+  "searchLocation": "Cari Lokasi terdekat ..."
 }
