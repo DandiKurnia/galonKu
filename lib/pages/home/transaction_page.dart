@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:galonku/config/theme.dart';
+import 'package:galonku/l10n/app_localizations.dart';
 
 class TransactionPage extends StatefulWidget {
   const TransactionPage({super.key});
@@ -8,8 +11,274 @@ class TransactionPage extends StatefulWidget {
 }
 
 class _TransactionPageState extends State<TransactionPage> {
+  final List<Map<String, String>> _transactions = const [
+    {
+      'invoice': 'inv-23131',
+      'count': '2',
+      'machine': '01',
+      'date': '20 Mei 2026',
+      'total': 'Rp 12.000',
+      'status': 'success',
+    },
+    {
+      'invoice': 'inv-23120',
+      'count': '1',
+      'machine': '03',
+      'date': '18 Mei 2026',
+      'total': 'Rp 6.000',
+      'status': 'cancelled',
+    },
+    {
+      'invoice': 'inv-23098',
+      'count': '3',
+      'machine': '02',
+      'date': '15 Mei 2026',
+      'total': 'Rp 18.000',
+      'status': 'success',
+    },
+    {
+      'invoice': 'inv-23098',
+      'count': '3',
+      'machine': '02',
+      'date': '15 Mei 2026',
+      'total': 'Rp 18.000',
+      'status': 'cancelled',
+    },
+    {
+      'invoice': 'inv-23098',
+      'count': '3',
+      'machine': '02',
+      'date': '15 Mei 2026',
+      'total': 'Rp 18.000',
+      'status': 'success',
+    },
+    {
+      'invoice': 'inv-23098',
+      'count': '3',
+      'machine': '02',
+      'date': '15 Mei 2026',
+      'total': 'Rp 18.000',
+      'status': 'success',
+    },
+    {
+      'invoice': 'inv-23098',
+      'count': '3',
+      'machine': '02',
+      'date': '15 Mei 2026',
+      'total': 'Rp 18.000',
+      'status': 'cancelled',
+    },
+    {
+      'invoice': 'inv-23098',
+      'count': '3',
+      'machine': '02',
+      'date': '15 Mei 2026',
+      'total': 'Rp 18.000',
+      'status': 'success',
+    },
+    {
+      'invoice': 'inv-23098',
+      'count': '3',
+      'machine': '02',
+      'date': '15 Mei 2026',
+      'total': 'Rp 18.000',
+      'status': 'success',
+    },
+    {
+      'invoice': 'inv-23098',
+      'count': '3',
+      'machine': '02',
+      'date': '15 Mei 2026',
+      'total': 'Rp 18.000',
+      'status': 'cancelled',
+    },
+    {
+      'invoice': 'inv-23098',
+      'count': '3',
+      'machine': '02',
+      'date': '15 Mei 2026',
+      'total': 'Rp 18.000',
+      'status': 'success',
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(
+      children: [
+        header(context),
+        Expanded(
+          child: ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+            itemCount: _transactions.length,
+            separatorBuilder: (_, __) => SizedBox(height: 12.h),
+            itemBuilder: (context, index) =>
+                transactionCard(_transactions[index]),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget transactionCard(Map<String, String> data) {
+    final l10n = AppLocalizations.of(context)!;
+    final isSuccess = data['status'] == 'success';
+    final statusColor = isSuccess ? successColor : errorColor;
+    final statusLabel = isSuccess
+        ? l10n.statusTransaction
+        : l10n.cancelTransaction;
+
+    return Container(
+      padding: EdgeInsets.all(12.h),
+      decoration: BoxDecoration(
+        color: whiteColor,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: backgroundColor3),
+      ),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              width: 56.w,
+              height: 56.h,
+              padding: EdgeInsets.all(6.h),
+              decoration: BoxDecoration(
+                color: softColor,
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              child: Image.asset(
+                'assets/images/galon.png',
+                fit: BoxFit.contain,
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 2.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: statusColor.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    child: Text(
+                      statusLabel,
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        fontWeight: medium,
+                        color: statusColor,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    l10n.transactionTitle,
+                    style: primaryTextStyle.copyWith(
+                      fontSize: 13.sp,
+                      fontWeight: semiBold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 2.h),
+                  Text(
+                    l10n.transactionAmount(data['count']!, data['machine']!),
+                    style: secondaryTextStyle.copyWith(
+                      fontSize: 11.sp,
+                      fontWeight: regular,
+                    ),
+                  ),
+                  SizedBox(height: 6.h),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.calendar_today_outlined,
+                        size: 12.h,
+                        color: secondaryTextColor,
+                      ),
+                      SizedBox(width: 4.w),
+                      Text(
+                        data['date']!,
+                        style: secondaryTextStyle.copyWith(
+                          fontSize: 11.sp,
+                          fontWeight: regular,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: 8.w),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  data['invoice']!,
+                  style: secondaryTextStyle.copyWith(
+                    fontSize: 11.sp,
+                    fontWeight: regular,
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      data['total']!,
+                      style: primaryTextStyle.copyWith(
+                        fontSize: 13.sp,
+                        fontWeight: bold,
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            l10n.showDetail,
+                            style: TextStyle(
+                              fontSize: 11.sp,
+                              fontWeight: medium,
+                              color: primaryColor,
+                            ),
+                          ),
+                          SizedBox(width: 2.w),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 10.h,
+                            color: primaryColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  AppBar header(BuildContext context) {
+    return AppBar(
+      title: Text(
+        AppLocalizations.of(context)!.transactionAppbar,
+        style: TextStyle(fontWeight: FontWeight.w700),
+      ),
+      centerTitle: true,
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      backgroundColor: transparentColor,
+    );
   }
 }

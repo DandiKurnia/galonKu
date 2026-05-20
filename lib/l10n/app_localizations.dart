@@ -265,6 +265,42 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Cari Lokasi terdekat ...'**
   String get searchLocation;
+
+  /// No description provided for @transactionAppbar.
+  ///
+  /// In id, this message translates to:
+  /// **'Riwayat Transaksi'**
+  String get transactionAppbar;
+
+  /// No description provided for @transactionTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Air Galon (19L)'**
+  String get transactionTitle;
+
+  /// No description provided for @transactionAmount.
+  ///
+  /// In id, this message translates to:
+  /// **'{count} Galon | Mesin {machine}'**
+  String transactionAmount(String count, String machine);
+
+  /// No description provided for @statusTransaction.
+  ///
+  /// In id, this message translates to:
+  /// **'Selesai'**
+  String get statusTransaction;
+
+  /// No description provided for @cancelTransaction.
+  ///
+  /// In id, this message translates to:
+  /// **'Dibatalkan'**
+  String get cancelTransaction;
+
+  /// No description provided for @showDetail.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat Detail'**
+  String get showDetail;
 }
 
 class _AppLocalizationsDelegate

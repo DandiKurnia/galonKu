@@ -30,5 +30,19 @@
 
 
   "tileAppbar": "Pilih Lokasi",
-  "searchLocation": "Cari Lokasi terdekat ..."
+  "searchLocation": "Cari Lokasi terdekat ...",
+
+  "transactionAppbar": "Riwayat Transaksi",
+  "transactionTitle": "Air Galon (19L)",
+  "transactionAmount": "{count} Galon | Mesin {machine}",
+  "@transactionAmount": {
+    "placeholders": {
+      "count": { "type": "String" },
+      "machine": { "type": "String" }
+    }
+  },
+
+  "statusTransaction": "Selesai",
+  "cancelTransaction": "Dibatalkan",
+  "showDetail": "Lihat Detail"
 }
