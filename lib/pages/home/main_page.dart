@@ -22,6 +22,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: softColor,
+      resizeToAvoidBottomInset: false,
       floatingActionButton: scanButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: customeBottomNav(),
@@ -66,11 +67,7 @@ class _MainPageState extends State<MainPage> {
               ),
               Row(
                 children: [
-                  _buildNavItem(
-                    2,
-                    Icons.receipt_long_outlined,
-                    Icons.receipt_long,
-                  ),
+                  _buildNavItem(2, Icons.receipt_outlined, Icons.receipt),
                   const SizedBox(width: 20),
                   _buildNavItem(3, Icons.person_outline, Icons.person),
                 ],

@@ -253,6 +253,18 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Lihat Semua'**
   String get findAll;
+
+  /// No description provided for @tileAppbar.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih Lokasi'**
+  String get tileAppbar;
+
+  /// No description provided for @searchLocation.
+  ///
+  /// In id, this message translates to:
+  /// **'Cari Lokasi terdekat ...'**
+  String get searchLocation;
 }
 
 class _AppLocalizationsDelegate

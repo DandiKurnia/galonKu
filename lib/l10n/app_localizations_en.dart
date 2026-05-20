@@ -86,4 +86,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get findAll => 'Find All';
+
+  @override
+  String get tileAppbar => 'Location';
+
+  @override
+  String get searchLocation => 'Search for the nearest location ...';
 }

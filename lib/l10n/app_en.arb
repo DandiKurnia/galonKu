@@ -25,5 +25,8 @@
   "fillUp": "Fill Up",
   "scanCode": "Scan QR Code",
   "location": "Location",
-  "findAll" : "Find All"
+  "findAll" : "Find All",
+
+  "tileAppbar": "Location",
+  "searchLocation": "Search for the nearest location ..."
 }
