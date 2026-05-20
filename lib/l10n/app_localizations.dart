@@ -182,6 +182,30 @@ abstract class AppLocalizations {
   /// **'Mau isi galon hari ini?'**
   String get dashboardSub;
 
+  /// No description provided for @headlineOne.
+  ///
+  /// In id, this message translates to:
+  /// **'Isi Galon'**
+  String get headlineOne;
+
+  /// No description provided for @headlineTwo.
+  ///
+  /// In id, this message translates to:
+  /// **'Mudah & Praktis'**
+  String get headlineTwo;
+
+  /// No description provided for @subHeadline.
+  ///
+  /// In id, this message translates to:
+  /// **'Temukan sendiri dispenser air minum terdekat dan isi galon Anda.'**
+  String get subHeadline;
+
+  /// No description provided for @checkOut.
+  ///
+  /// In id, this message translates to:
+  /// **'Pesan Sekarang'**
+  String get checkOut;
+
   /// No description provided for @tutorial.
   ///
   /// In id, this message translates to:

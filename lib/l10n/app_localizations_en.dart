@@ -51,6 +51,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardSub => 'Want to fill your gallon today?';
 
   @override
+  String get headlineOne => 'Fill Gallon';
+
+  @override
+  String get headlineTwo => 'Easy & Practical';
+
+  @override
+  String get subHeadline =>
+      'Find yourself the nearest water dispenser and fill your gallon.';
+
+  @override
+  String get checkOut => 'Check Out';
+
+  @override
   String get tutorial => 'How to Use';
 
   @override

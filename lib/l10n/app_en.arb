@@ -14,6 +14,10 @@
 
   "dashboardGreeting": "Hello",
   "dashboardSub": "Want to fill your gallon today?",
+  "headlineOne": "Fill Gallon",
+  "headlineTwo": "Easy & Practical",
+  "subHeadline": "Find yourself the nearest water dispenser and fill your gallon.",
+  "checkOut": "Check Out",
   "tutorial": "How to Use",
   "pickLocation": "Pick Location",
   "pickMesin": "Pick Machine",

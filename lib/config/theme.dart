@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 Color primaryColor = Color(0xff2F80ED);
 Color secondaryColor = Color(0xff56CCF2);
 Color softColor = Color(0xffEFF6FF);
@@ -15,22 +14,23 @@ Color secondaryTextColor = Color(0xff6B7280);
 Color transparentColor = Colors.transparent;
 Color whiteColor = Color(0xffFFFFFF);
 
-TextStyle primaryTextStyle = GoogleFonts.inter(color: primaryTextColor);
+TextStyle primaryTextStyle = GoogleFonts.poppins(color: primaryTextColor);
 
-TextStyle secondaryTextStyle = GoogleFonts.inter(color: secondaryTextColor);
+TextStyle secondaryTextStyle = GoogleFonts.poppins(color: secondaryTextColor);
 
-TextStyle priceTextStyle = GoogleFonts.inter(color: primaryTextColor);
+TextStyle priceTextStyle = GoogleFonts.poppins(color: primaryTextColor);
 
-TextStyle headingTextStyle = GoogleFonts.inter(color: backgroundColor1);
+TextStyle headingTextStyle = GoogleFonts.poppins(color: backgroundColor1);
 
-TextStyle headingBlueTextStyle = GoogleFonts.inter(color: primaryColor);
+TextStyle headingBlueTextStyle = GoogleFonts.poppins(color: primaryColor);
 
-TextStyle successTextStyle = GoogleFonts.inter(color: successColor);
+TextStyle successTextStyle = GoogleFonts.poppins(color: successColor);
 
-TextStyle errorTextStyle = GoogleFonts.inter(color: errorColor);
+TextStyle errorTextStyle = GoogleFonts.poppins(color: errorColor);
 
 FontWeight light = FontWeight.w300;
 FontWeight regular = FontWeight.w400;
 FontWeight medium = FontWeight.w500;
 FontWeight semiBold = FontWeight.w600;
 FontWeight bold = FontWeight.w700;
+FontWeight extraBold = FontWeight.w800;

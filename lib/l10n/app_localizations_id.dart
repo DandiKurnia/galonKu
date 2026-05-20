@@ -51,6 +51,19 @@ class AppLocalizationsId extends AppLocalizations {
   String get dashboardSub => 'Mau isi galon hari ini?';
 
   @override
+  String get headlineOne => 'Isi Galon';
+
+  @override
+  String get headlineTwo => 'Mudah & Praktis';
+
+  @override
+  String get subHeadline =>
+      'Temukan sendiri dispenser air minum terdekat dan isi galon Anda.';
+
+  @override
+  String get checkOut => 'Pesan Sekarang';
+
+  @override
   String get tutorial => 'Cara Penggunaan';
 
   @override
