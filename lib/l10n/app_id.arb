@@ -45,5 +45,26 @@
 
   "statusTransaction": "Selesai",
   "cancelTransaction": "Dibatalkan",
-  "showDetail": "Lihat Detail"
+  "showDetail": "Lihat Detail",
+
+  "profileAppbar": "Profil",
+  "profileAccount": "Akun",
+  "profileGeneral": "Umum",
+  "editProfile": "Edit Profil",
+  "help": "Bantuan",
+  "privacyPolicy": "Kebijakan Privasi",
+  "termsOfService": "Ketentuan Layanan",
+  "rateApp": "Beri Rating Aplikasi",
+  "logout": "Keluar",
+  "logoutConfirmTitle": "Keluar dari Akun?",
+  "logoutConfirmMessage": "Anda akan keluar dari akun Galonku.",
+  "cancel": "Batal",
+
+  "editProfileTitle": "Edit Profil",
+  "editProfileSub": "Perbarui informasi akun Anda",
+  "phoneNumber": "Nomor Telepon",
+  "address": "Alamat",
+  "save": "Simpan",
+  "changePhoto": "Ubah Foto",
+  "saveSuccess": "Profil berhasil diperbarui"
 }

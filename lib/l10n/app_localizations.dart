@@ -307,6 +307,120 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Lihat Detail'**
   String get showDetail;
+
+  /// No description provided for @profileAppbar.
+  ///
+  /// In id, this message translates to:
+  /// **'Profil'**
+  String get profileAppbar;
+
+  /// No description provided for @profileAccount.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun'**
+  String get profileAccount;
+
+  /// No description provided for @profileGeneral.
+  ///
+  /// In id, this message translates to:
+  /// **'Umum'**
+  String get profileGeneral;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In id, this message translates to:
+  /// **'Edit Profil'**
+  String get editProfile;
+
+  /// No description provided for @help.
+  ///
+  /// In id, this message translates to:
+  /// **'Bantuan'**
+  String get help;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In id, this message translates to:
+  /// **'Kebijakan Privasi'**
+  String get privacyPolicy;
+
+  /// No description provided for @termsOfService.
+  ///
+  /// In id, this message translates to:
+  /// **'Ketentuan Layanan'**
+  String get termsOfService;
+
+  /// No description provided for @rateApp.
+  ///
+  /// In id, this message translates to:
+  /// **'Beri Rating Aplikasi'**
+  String get rateApp;
+
+  /// No description provided for @logout.
+  ///
+  /// In id, this message translates to:
+  /// **'Keluar'**
+  String get logout;
+
+  /// No description provided for @logoutConfirmTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Keluar dari Akun?'**
+  String get logoutConfirmTitle;
+
+  /// No description provided for @logoutConfirmMessage.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda akan keluar dari akun Galonku.'**
+  String get logoutConfirmMessage;
+
+  /// No description provided for @cancel.
+  ///
+  /// In id, this message translates to:
+  /// **'Batal'**
+  String get cancel;
+
+  /// No description provided for @editProfileTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Edit Profil'**
+  String get editProfileTitle;
+
+  /// No description provided for @editProfileSub.
+  ///
+  /// In id, this message translates to:
+  /// **'Perbarui informasi akun Anda'**
+  String get editProfileSub;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In id, this message translates to:
+  /// **'Nomor Telepon'**
+  String get phoneNumber;
+
+  /// No description provided for @address.
+  ///
+  /// In id, this message translates to:
+  /// **'Alamat'**
+  String get address;
+
+  /// No description provided for @save.
+  ///
+  /// In id, this message translates to:
+  /// **'Simpan'**
+  String get save;
+
+  /// No description provided for @changePhoto.
+  ///
+  /// In id, this message translates to:
+  /// **'Ubah Foto'**
+  String get changePhoto;
+
+  /// No description provided for @saveSuccess.
+  ///
+  /// In id, this message translates to:
+  /// **'Profil berhasil diperbarui'**
+  String get saveSuccess;
 }
 
 class _AppLocalizationsDelegate

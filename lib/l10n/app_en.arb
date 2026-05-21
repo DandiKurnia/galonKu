@@ -43,5 +43,26 @@
 
   "statusTransaction": "Completed",
   "cancelTransaction": "Cancelled",
-  "showDetail": "Show Detail"
+  "showDetail": "Show Detail",
+
+  "profileAppbar": "Profile",
+  "profileAccount": "Account",
+  "profileGeneral": "General",
+  "editProfile": "Edit Profile",
+  "help": "Help",
+  "privacyPolicy": "Privacy Policy",
+  "termsOfService": "Terms of Service",
+  "rateApp": "Rate App",
+  "logout": "Logout",
+  "logoutConfirmTitle": "Logout from Account?",
+  "logoutConfirmMessage": "You will be signed out of your Galonku account.",
+  "cancel": "Cancel",
+
+  "editProfileTitle": "Edit Profile",
+  "editProfileSub": "Update your account information",
+  "phoneNumber": "Phone Number",
+  "address": "Address",
+  "save": "Save",
+  "changePhoto": "Change Photo",
+  "saveSuccess": "Profile updated successfully"
 }

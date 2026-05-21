@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:galonku/pages/home/home_page.dart';
+import 'package:galonku/pages/edit_profile_page.dart';
 import 'package:galonku/pages/sign_in_page.dart';
 import 'package:galonku/pages/splash_page.dart';
 import 'package:galonku/pages/sign_up_page.dart';
@@ -20,6 +20,9 @@ class AppRoute {
         break;
       case '/main':
         page = const MainPage();
+        break;
+      case '/edit-profile':
+        page = const EditProfilePage();
         break;
       default:
         return null;
