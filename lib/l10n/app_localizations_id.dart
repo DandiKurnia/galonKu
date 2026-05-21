@@ -115,4 +115,61 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get showDetail => 'Lihat Detail';
+
+  @override
+  String get profileAppbar => 'Profil';
+
+  @override
+  String get profileAccount => 'Akun';
+
+  @override
+  String get profileGeneral => 'Umum';
+
+  @override
+  String get editProfile => 'Edit Profil';
+
+  @override
+  String get help => 'Bantuan';
+
+  @override
+  String get privacyPolicy => 'Kebijakan Privasi';
+
+  @override
+  String get termsOfService => 'Ketentuan Layanan';
+
+  @override
+  String get rateApp => 'Beri Rating Aplikasi';
+
+  @override
+  String get logout => 'Keluar';
+
+  @override
+  String get logoutConfirmTitle => 'Keluar dari Akun?';
+
+  @override
+  String get logoutConfirmMessage => 'Anda akan keluar dari akun Galonku.';
+
+  @override
+  String get cancel => 'Batal';
+
+  @override
+  String get editProfileTitle => 'Edit Profil';
+
+  @override
+  String get editProfileSub => 'Perbarui informasi akun Anda';
+
+  @override
+  String get phoneNumber => 'Nomor Telepon';
+
+  @override
+  String get address => 'Alamat';
+
+  @override
+  String get save => 'Simpan';
+
+  @override
+  String get changePhoto => 'Ubah Foto';
+
+  @override
+  String get saveSuccess => 'Profil berhasil diperbarui';
 }

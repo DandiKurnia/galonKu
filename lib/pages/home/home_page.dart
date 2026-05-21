@@ -52,263 +52,164 @@ class _HomePageState extends State<HomePage> {
         ),
         SizedBox(height: 12.h),
         locationStore(),
+        SizedBox(height: 16.h),
       ],
     );
   }
 
-  Container locationStore() {
+  Widget locationStore() {
+    final stores = [
+      {
+        'name': 'Aqua Jakarta Timur',
+        'address': 'Jl. Pendidikan No. 123',
+        'distance': '2 Km',
+        'rating': '4.8',
+      },
+      {
+        'name': 'Le Minerale Cawang',
+        'address': 'Jl. Mawar Raya No. 45',
+        'distance': '3 Km',
+        'rating': '4.7',
+      },
+      {
+        'name': 'Aqua Cipinang',
+        'address': 'Jl. Melati Indah No. 12',
+        'distance': '4 Km',
+        'rating': '4.6',
+      },
+    ];
+
+    return SizedBox(
+      height: 200.h,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        itemCount: stores.length,
+        separatorBuilder: (_, __) => SizedBox(width: 12.w),
+        itemBuilder: (context, index) => _storeCard(stores[index]),
+      ),
+    );
+  }
+
+  Widget _storeCard(Map<String, String> store) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.w),
-      padding: EdgeInsets.all(8.h),
+      width: 220.w,
       decoration: BoxDecoration(
         color: whiteColor,
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          Stack(
             children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(8.h),
-                      decoration: BoxDecoration(
-                        color: primaryColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(100.r),
-                      ),
-                      child: Icon(
-                        Icons.location_on,
-                        size: 30.h,
-                        color: primaryColor,
-                      ),
+              ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
+                child: Container(
+                  height: 100.h,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        primaryColor.withValues(alpha: 0.15),
+                        secondaryColor.withValues(alpha: 0.15),
+                      ],
                     ),
-                    SizedBox(width: 8.w),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Aqua Jakarta Timur',
-                            style: primaryTextStyle.copyWith(
-                              fontSize: 12.sp,
-                              fontWeight: medium,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            'Jl. Pendidikan No. 123 312312 3123123',
-                            style: secondaryTextStyle.copyWith(
-                              fontSize: 12.sp,
-                              fontWeight: medium,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
+                  child: Icon(
+                    Icons.storefront_rounded,
+                    size: 56.h,
+                    color: primaryColor,
+                  ),
                 ),
               ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        'Jarak 2 Km',
-                        style: secondaryTextStyle.copyWith(
-                          fontSize: 12.sp,
-                          fontWeight: medium,
+              Positioned(
+                top: 8.h,
+                right: 8.w,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  decoration: BoxDecoration(
+                    color: whiteColor,
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.location_on, size: 12.h, color: primaryColor),
+                      SizedBox(width: 2.w),
+                      Text(
+                        store['distance']!,
+                        style: primaryTextStyle.copyWith(
+                          fontSize: 10.sp,
+                          fontWeight: semiBold,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 12.h,
-                      color: secondaryTextColor,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 8.h),
-          Container(
-            height: 1.w,
-            width: double.infinity,
-            color: backgroundColor3,
-          ),
-          SizedBox(height: 8.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Row(
+          Padding(
+            padding: EdgeInsets.all(10.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  store['name']!,
+                  style: primaryTextStyle.copyWith(
+                    fontSize: 13.sp,
+                    fontWeight: semiBold,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  store['address']!,
+                  style: secondaryTextStyle.copyWith(
+                    fontSize: 11.sp,
+                    fontWeight: regular,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: 8.h),
+                Row(
                   children: [
+                    Icon(
+                      Icons.star_rounded,
+                      size: 14.h,
+                      color: Color(0xffFFC107),
+                    ),
+                    SizedBox(width: 2.w),
+                    Text(
+                      store['rating']!,
+                      style: primaryTextStyle.copyWith(
+                        fontSize: 11.sp,
+                        fontWeight: semiBold,
+                      ),
+                    ),
+                    Spacer(),
                     Container(
-                      padding: EdgeInsets.all(8.h),
+                      padding: EdgeInsets.all(6.h),
                       decoration: BoxDecoration(
-                        color: primaryColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(100.r),
+                        color: primaryColor,
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Icon(
-                        Icons.location_on,
-                        size: 30.h,
-                        color: primaryColor,
-                      ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Aqua Jakarta Timur',
-                            style: primaryTextStyle.copyWith(
-                              fontSize: 12.sp,
-                              fontWeight: medium,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            'Jl. Pendidikan No. 123 312312 3123123',
-                            style: secondaryTextStyle.copyWith(
-                              fontSize: 12.sp,
-                              fontWeight: medium,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                        Icons.arrow_forward_rounded,
+                        size: 14.h,
+                        color: whiteColor,
                       ),
                     ),
                   ],
                 ),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        'Jarak 2 Km',
-                        style: secondaryTextStyle.copyWith(
-                          fontSize: 12.sp,
-                          fontWeight: medium,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 12.h,
-                      color: secondaryTextColor,
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-          SizedBox(height: 8.h),
-          Container(
-            height: 1.w,
-            width: double.infinity,
-            color: backgroundColor3,
-          ),
-          SizedBox(height: 8.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(8.h),
-                      decoration: BoxDecoration(
-                        color: primaryColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(100.r),
-                      ),
-                      child: Icon(
-                        Icons.location_on,
-                        size: 30.h,
-                        color: primaryColor,
-                      ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Aqua Jakarta Timur',
-                            style: primaryTextStyle.copyWith(
-                              fontSize: 12.sp,
-                              fontWeight: medium,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            'Jl. Pendidikan No. 123 312312 3123123',
-                            style: secondaryTextStyle.copyWith(
-                              fontSize: 12.sp,
-                              fontWeight: medium,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        'Jarak 2 Km',
-                        style: secondaryTextStyle.copyWith(
-                          fontSize: 12.sp,
-                          fontWeight: medium,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 12.h,
-                      color: secondaryTextColor,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 8.h),
-          Container(
-            height: 1.w,
-            width: double.infinity,
-            color: backgroundColor3,
-          ),
-          SizedBox(height: 8.h),
         ],
       ),
     );
@@ -431,7 +332,11 @@ class _HomePageState extends State<HomePage> {
                     width: 140.w,
                     child: TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/main');
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/main',
+                          (route) => false,
+                        );
                       },
                       style: TextButton.styleFrom(
                         backgroundColor: primaryColor,

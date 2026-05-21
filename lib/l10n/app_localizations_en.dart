@@ -115,4 +115,62 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get showDetail => 'Show Detail';
+
+  @override
+  String get profileAppbar => 'Profile';
+
+  @override
+  String get profileAccount => 'Account';
+
+  @override
+  String get profileGeneral => 'General';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get help => 'Help';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get termsOfService => 'Terms of Service';
+
+  @override
+  String get rateApp => 'Rate App';
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get logoutConfirmTitle => 'Logout from Account?';
+
+  @override
+  String get logoutConfirmMessage =>
+      'You will be signed out of your Galonku account.';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get editProfileTitle => 'Edit Profile';
+
+  @override
+  String get editProfileSub => 'Update your account information';
+
+  @override
+  String get phoneNumber => 'Phone Number';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get changePhoto => 'Change Photo';
+
+  @override
+  String get saveSuccess => 'Profile updated successfully';
 }

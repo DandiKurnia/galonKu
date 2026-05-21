@@ -231,7 +231,11 @@ class SignInButton extends StatelessWidget {
       width: double.infinity,
       child: TextButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/main');
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/main',
+            (route) => false,
+          );
         },
         style: TextButton.styleFrom(
           backgroundColor: primaryColor,
