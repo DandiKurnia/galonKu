@@ -100,6 +100,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get transactionTitle => 'Air Galon (19L)';
 
   @override
+  String get filterAll => 'Semua';
+
+  @override
   String transactionAmount(String count, String machine) {
     return '$count Galon | Mesin $machine';
   }

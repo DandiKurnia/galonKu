@@ -11,6 +11,30 @@ class TransactionPage extends StatefulWidget {
 }
 
 class _TransactionPageState extends State<TransactionPage> {
+  String _selectedFilter = 'all';
+  final ScrollController _scrollController = ScrollController();
+  bool _isScrolled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final scrolled = _scrollController.offset > 4;
+    if (scrolled != _isScrolled) {
+      setState(() => _isScrolled = scrolled);
+    }
+  }
+
   final List<Map<String, String>> _transactions = const [
     {
       'invoice': 'inv-23131',
@@ -104,19 +128,87 @@ class _TransactionPageState extends State<TransactionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final filtered = _selectedFilter == 'all'
+        ? _transactions
+        : _transactions.where((tx) => tx['status'] == _selectedFilter).toList();
+
+    return Stack(
       children: [
-        header(context),
-        Expanded(
-          child: ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-            itemCount: _transactions.length,
-            separatorBuilder: (_, __) => SizedBox(height: 12.h),
-            itemBuilder: (context, index) =>
-                transactionCard(_transactions[index]),
+        Positioned.fill(
+          child: ListView.builder(
+            controller: _scrollController,
+            padding: EdgeInsets.only(bottom: 24.h),
+            itemCount: filtered.length + 2,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return header(context);
+              }
+              if (index == 1) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 12.h),
+                  child: filterBar(context),
+                );
+              }
+              return Padding(
+                padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 12.h),
+                child: transactionCard(filtered[index - 2]),
+              );
+            },
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            color: _isScrolled ? whiteColor : transparentColor,
+            height: MediaQuery.of(context).padding.top,
           ),
         ),
       ],
+    );
+  }
+
+  Widget filterBar(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final filters = [
+      {'value': 'all', 'label': l10n.filterAll},
+      {'value': 'success', 'label': l10n.statusTransaction},
+      {'value': 'cancelled', 'label': l10n.cancelTransaction},
+    ];
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.h),
+      child: Row(
+        children: filters.map((f) {
+          final isActive = _selectedFilter == f['value'];
+          return Padding(
+            padding: EdgeInsets.only(right: 8.w),
+            child: GestureDetector(
+              onTap: () => setState(() => _selectedFilter = f['value']!),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: isActive ? primaryColor : whiteColor,
+                  borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(
+                    color: isActive ? primaryColor : backgroundColor3,
+                  ),
+                ),
+                child: Text(
+                  f['label']!,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: medium,
+                    color: isActive ? whiteColor : primaryTextColor,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
     );
   }
 
@@ -269,7 +361,7 @@ class _TransactionPageState extends State<TransactionPage> {
     );
   }
 
-  AppBar header(BuildContext context) {
+  Widget header(BuildContext context) {
     return AppBar(
       title: Text(
         AppLocalizations.of(context)!.transactionAppbar,
@@ -279,6 +371,8 @@ class _TransactionPageState extends State<TransactionPage> {
       elevation: 0,
       automaticallyImplyLeading: false,
       backgroundColor: transparentColor,
+      surfaceTintColor: transparentColor,
+      scrolledUnderElevation: 0,
     );
   }
 }

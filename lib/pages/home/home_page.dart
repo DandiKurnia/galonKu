@@ -316,124 +316,75 @@ class _HomePageState extends State<HomePage> {
 
   Container tutorial(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
       margin: EdgeInsets.symmetric(horizontal: 20.w),
       decoration: BoxDecoration(
         color: whiteColor,
         borderRadius: BorderRadius.circular(10.r),
       ),
-      child: Column(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(8.h),
-                    decoration: BoxDecoration(
-                      color: primaryColor.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    child: Icon(
-                      Icons.location_on,
-                      size: 30.h,
-                      color: primaryColor,
-                    ),
-                  ),
-                  SizedBox(height: 6.h),
-                  Text(
-                    AppLocalizations.of(context)!.pickLocation,
-                    style: primaryTextStyle.copyWith(
-                      fontSize: 12.sp,
-                      fontWeight: medium,
-                    ),
-                  ),
-                ],
+          Expanded(
+            child: _tutorialItem(
+              icon: Icon(Icons.location_on, size: 22.h, color: primaryColor),
+              label: AppLocalizations.of(context)!.pickLocation,
+            ),
+          ),
+          Container(height: 60.h, width: 1.w, color: backgroundColor3),
+          Expanded(
+            child: _tutorialItem(
+              icon: Image.asset(
+                'assets/images/mesingalon.png',
+                height: 22.h,
+                width: 22.w,
               ),
-              Container(height: 60.h, width: 1.w, color: backgroundColor3),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(8.h),
-                    decoration: BoxDecoration(
-                      color: primaryColor.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    child: Image.asset(
-                      'assets/images/mesinGalon.png',
-                      height: 30.h,
-                      width: 30.w,
-                    ),
-                  ),
-                  SizedBox(height: 6.h),
-                  Text(
-                    AppLocalizations.of(context)!.pickMesin,
-                    style: primaryTextStyle.copyWith(
-                      fontSize: 12.sp,
-                      fontWeight: medium,
-                    ),
-                  ),
-                ],
+              label: AppLocalizations.of(context)!.pickMesin,
+            ),
+          ),
+          Container(height: 60.h, width: 1.w, color: backgroundColor3),
+          Expanded(
+            child: _tutorialItem(
+              icon: Icon(Icons.credit_card, size: 22.h, color: primaryColor),
+              label: AppLocalizations.of(context)!.payment,
+            ),
+          ),
+          Container(height: 60.h, width: 1.w, color: backgroundColor3),
+          Expanded(
+            child: _tutorialItem(
+              icon: Image.asset(
+                'assets/images/galon.png',
+                height: 22.h,
+                width: 22.w,
               ),
-              Container(height: 60.h, width: 1.w, color: backgroundColor3),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(8.h),
-                    decoration: BoxDecoration(
-                      color: primaryColor.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    child: Icon(
-                      Icons.credit_card,
-                      size: 30.h,
-                      color: primaryColor,
-                    ),
-                  ),
-                  SizedBox(height: 6.h),
-                  Text(
-                    AppLocalizations.of(context)!.payment,
-                    style: primaryTextStyle.copyWith(
-                      fontSize: 12.sp,
-                      fontWeight: medium,
-                    ),
-                  ),
-                ],
-              ),
-              Container(height: 60.h, width: 1.w, color: backgroundColor3),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(8.h),
-                    decoration: BoxDecoration(
-                      color: primaryColor.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    child: Image.asset(
-                      'assets/images/galon.png',
-                      height: 30.h,
-                      width: 30.w,
-                    ),
-                  ),
-                  SizedBox(height: 6.h),
-                  Text(
-                    AppLocalizations.of(context)!.fillUp,
-                    style: primaryTextStyle.copyWith(
-                      fontSize: 12.sp,
-                      fontWeight: medium,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+              label: AppLocalizations.of(context)!.fillUp,
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _tutorialItem({required Widget icon, required String label}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          padding: EdgeInsets.all(8.h),
+          decoration: BoxDecoration(
+            color: primaryColor.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: icon,
+        ),
+        SizedBox(height: 6.h),
+        Text(
+          label,
+          textAlign: TextAlign.center,
+          style: primaryTextStyle.copyWith(fontSize: 11.sp, fontWeight: medium),
+        ),
+      ],
     );
   }
 

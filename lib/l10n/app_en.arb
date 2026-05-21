@@ -32,6 +32,7 @@
 
   "transactionAppbar": "Transaction History",
   "transactionTitle": "Gallon Water (19L)",
+  "filterAll": "All",
   "transactionAmount": "{count} Gallons | Machine {machine}",
   "@transactionAmount": {
     "placeholders": {
