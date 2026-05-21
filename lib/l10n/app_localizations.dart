@@ -278,6 +278,12 @@ abstract class AppLocalizations {
   /// **'Air Galon (19L)'**
   String get transactionTitle;
 
+  /// No description provided for @filterAll.
+  ///
+  /// In id, this message translates to:
+  /// **'Semua'**
+  String get filterAll;
+
   /// No description provided for @transactionAmount.
   ///
   /// In id, this message translates to:

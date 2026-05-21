@@ -100,6 +100,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get transactionTitle => 'Gallon Water (19L)';
 
   @override
+  String get filterAll => 'All';
+
+  @override
   String transactionAmount(String count, String machine) {
     return '$count Gallons | Machine $machine';
   }
