@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
+import 'package:galonku/services/sign_up_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -12,6 +13,47 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   bool _obscureText = true;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleSignUp() async {
+    final name = _nameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (name.isEmpty || email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Semua field wajib diisi')));
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      await SignUpService().signUp(name, email, password);
+
+      if (!mounted) return;
+      Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString().replaceFirst('Exception: ', ''))),
+      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +73,43 @@ class _SignUpPageState extends State<SignUpPage> {
             SizedBox(height: 20.h),
             passwordInput(context),
             SizedBox(height: 30.h),
-            SignUpButton(),
+            signUpButton(context),
             const Spacer(),
             footer(context),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget signUpButton(BuildContext context) {
+    return SizedBox(
+      height: 50.h,
+      width: double.infinity,
+      child: TextButton(
+        onPressed: _isLoading ? null : _handleSignUp,
+        style: TextButton.styleFrom(
+          backgroundColor: primaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+        ),
+        child: _isLoading
+            ? SizedBox(
+                height: 20.h,
+                width: 20.h,
+                child: const CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            : Text(
+                AppLocalizations.of(context)!.signUp,
+                style: headingTextStyle.copyWith(
+                  fontSize: 12.sp,
+                  fontWeight: medium,
+                ),
+              ),
       ),
     );
   }
@@ -98,6 +172,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(width: 16.w),
                   Expanded(
                     child: TextField(
+                      controller: _nameController,
                       style: primaryTextStyle,
                       decoration: InputDecoration.collapsed(
                         hintText: AppLocalizations.of(context)!.name,
@@ -143,6 +218,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(width: 16.w),
                   Expanded(
                     child: TextField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
                       style: primaryTextStyle,
                       decoration: InputDecoration.collapsed(
                         hintText: AppLocalizations.of(context)!.email,
@@ -188,6 +265,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(width: 16.w),
                   Expanded(
                     child: TextField(
+                      controller: _passwordController,
                       style: primaryTextStyle,
                       obscureText: _obscureText,
                       decoration: InputDecoration.collapsed(
@@ -239,37 +317,6 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class SignUpButton extends StatelessWidget {
-  const SignUpButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50.h,
-      width: double.infinity,
-      child: TextButton(
-        onPressed: () {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/main',
-            (route) => false,
-          );
-        },
-        style: TextButton.styleFrom(
-          backgroundColor: primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
-          ),
-        ),
-        child: Text(
-          AppLocalizations.of(context)!.signUp,
-          style: headingTextStyle.copyWith(fontSize: 12.sp, fontWeight: medium),
-        ),
       ),
     );
   }
