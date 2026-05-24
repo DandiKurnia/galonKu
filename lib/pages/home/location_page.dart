@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
@@ -29,9 +30,13 @@ class _LocationPageState extends State<LocationPage> {
   static const LatLng _margondaDepok = LatLng(-6.3795, 106.8316);
   LatLng _markerPosition = _margondaDepok;
 
+  final ScrollController _scrollController = ScrollController();
+  bool _isScrolled = false;
+
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
     _focusNode.addListener(() {
       setState(() {
         _isFocused = _focusNode.hasFocus;
@@ -41,11 +46,20 @@ class _LocationPageState extends State<LocationPage> {
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
     _debounce?.cancel();
     _focusNode.dispose();
     _searchController.dispose();
     _geocoder.dispose();
     super.dispose();
+  }
+
+  void _onScroll() {
+    final scrolled = _scrollController.offset > 4;
+    if (scrolled != _isScrolled) {
+      setState(() => _isScrolled = scrolled);
+    }
   }
 
   void _onQueryChanged(String value) {
@@ -92,15 +106,33 @@ class _LocationPageState extends State<LocationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Stack(
       children: [
-        header(context),
-        search(context),
-        if (_isSearching || _suggestions.isNotEmpty) suggestionList(),
-        SizedBox(height: 12.h),
-        maps(),
-        SizedBox(height: 12.h),
-        locationStore(),
+        Positioned.fill(
+          child: ListView(
+            controller: _scrollController,
+            children: [
+              header(context),
+              search(context),
+              if (_isSearching || _suggestions.isNotEmpty) suggestionList(),
+              SizedBox(height: 12.h),
+              maps(),
+              SizedBox(height: 12.h),
+              locationStore(),
+              SizedBox(height: 100.h),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            color: _isScrolled ? whiteColor : transparentColor,
+            height: MediaQuery.of(context).padding.top,
+          ),
+        ),
       ],
     );
   }
@@ -120,6 +152,20 @@ class _LocationPageState extends State<LocationPage> {
         'distance': '3 Km',
         'rating': '4.7',
         'open': true,
+      },
+      {
+        'name': 'Aqua Cipinang',
+        'address': 'Jl. Melati Indah No. 12, Cipinang',
+        'distance': '4 Km',
+        'rating': '4.6',
+        'open': false,
+      },
+      {
+        'name': 'Aqua Cipinang',
+        'address': 'Jl. Melati Indah No. 12, Cipinang',
+        'distance': '4 Km',
+        'rating': '4.6',
+        'open': false,
       },
       {
         'name': 'Aqua Cipinang',
@@ -399,6 +445,11 @@ class _LocationPageState extends State<LocationPage> {
 
   AppBar header(BuildContext context) {
     return AppBar(
+      systemOverlayStyle: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+      ),
       title: Text(
         AppLocalizations.of(context)!.tileAppbar,
         style: TextStyle(fontWeight: FontWeight.w700),
@@ -407,6 +458,8 @@ class _LocationPageState extends State<LocationPage> {
       elevation: 0,
       automaticallyImplyLeading: false,
       backgroundColor: transparentColor,
+      surfaceTintColor: transparentColor,
+      scrolledUnderElevation: 0,
     );
   }
 }

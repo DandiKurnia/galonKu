@@ -66,5 +66,23 @@
   "address": "Alamat",
   "save": "Simpan",
   "changePhoto": "Ubah Foto",
-  "saveSuccess": "Profil berhasil diperbarui"
+  "saveSuccess": "Profil berhasil diperbarui",
+
+  "checkoutAppbar": "Checkout",
+  "water": "Air Minum",
+  "subTextGalon": "Air Galon (19L)",
+  "countGallon": "Jumlah Galon",
+  "locationName": "Lokasi",
+  "machine": "Mesin",
+  "count": "Jumlah",
+  "total": "Total",
+
+  "chooseGallon": "Pilih Galon",
+  "quantity": "Jumlah",
+  "fillLocation": "Tujuan Pengisian",
+  "paymentMethod": "Metode Pembayaran",
+  "subtotal": "Subtotal",
+  "pay": "Bayar",
+  "balance": "Saldo",
+  "checkoutSuccess": "Pembelian berhasil! Memproses air..."
 }

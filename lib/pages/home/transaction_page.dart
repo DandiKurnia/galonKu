@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
@@ -137,7 +138,7 @@ class _TransactionPageState extends State<TransactionPage> {
         Positioned.fill(
           child: ListView.builder(
             controller: _scrollController,
-            padding: EdgeInsets.only(bottom: 24.h),
+            padding: EdgeInsets.only(bottom: 100.h),
             itemCount: filtered.length + 2,
             itemBuilder: (context, index) {
               if (index == 0) {
@@ -363,6 +364,11 @@ class _TransactionPageState extends State<TransactionPage> {
 
   Widget header(BuildContext context) {
     return AppBar(
+      systemOverlayStyle: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+      ),
       title: Text(
         AppLocalizations.of(context)!.transactionAppbar,
         style: TextStyle(fontWeight: FontWeight.w700),

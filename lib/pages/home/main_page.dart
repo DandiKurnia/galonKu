@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/pages/home/home_page.dart';
 import 'package:galonku/pages/home/location_page.dart';
@@ -21,13 +22,21 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: softColor,
-      resizeToAvoidBottomInset: false,
-      floatingActionButton: scanButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: customeBottomNav(),
-      body: body(),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+      ),
+      child: Scaffold(
+        backgroundColor: softColor,
+        resizeToAvoidBottomInset: false,
+        extendBody: true,
+        floatingActionButton: scanButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: customeBottomNav(),
+        body: body(),
+      ),
     );
   }
 
@@ -49,6 +58,8 @@ class _MainPageState extends State<MainPage> {
         notchMargin: 12,
         clipBehavior: Clip.antiAlias,
         color: whiteColor,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
         child: Container(
           height: 85,
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -120,8 +131,10 @@ class _MainPageState extends State<MainPage> {
     ).push<String>(MaterialPageRoute(builder: (_) => const ScanQrPage()));
     if (!mounted || result == null) return;
     logger.d('QR scan result: $result');
-    ScaffoldMessenger.of(
+    Navigator.pushNamed(
       context,
-    ).showSnackBar(SnackBar(content: Text('Hasil scan: $result')));
+      '/checkout',
+      arguments: result,
+    );
   }
 }

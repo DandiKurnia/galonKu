@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -37,6 +38,11 @@ class _ScanQrPageState extends State<ScanQrPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark,
+        ),
         backgroundColor: Colors.black,
         foregroundColor: whiteColor,
         title: const Text('Scan QR Mesin'),
@@ -78,17 +84,39 @@ class _ScanQrPageState extends State<ScanQrPage> {
             ),
           ),
           Positioned(
-            bottom: 60.h,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-              decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.6),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Text(
-                'Arahkan kamera ke QR pada mesin galon',
-                style: TextStyle(color: whiteColor, fontSize: 12.sp),
-              ),
+            bottom: 40.h,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.6),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Text(
+                    'Arahkan kamera ke QR pada mesin galon',
+                    style: TextStyle(color: whiteColor, fontSize: 12.sp),
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    _controller.stop();
+                    Navigator.of(context).pop("Mesin 03 (Mock)");
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    foregroundColor: whiteColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                  ),
+                  icon: const Icon(Icons.developer_mode_rounded),
+                  label: const Text('Simulasi Scan (Bypass)'),
+                ),
+              ],
             ),
           ),
         ],
