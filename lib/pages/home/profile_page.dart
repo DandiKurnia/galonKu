@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
+import 'package:galonku/models/sign_in_model.dart';
+import 'package:galonku/services/auth_service.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -11,6 +14,24 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  User? _user;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    final user = await AuthService().getUser();
+    if (!mounted) return;
+    setState(() {
+      _user = user;
+      _loading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -36,55 +57,63 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-        children: [
-          _profileHeader(),
-          SizedBox(height: 24.h),
-          _sectionTitle(l10n.profileAccount),
-          SizedBox(height: 8.h),
-          _menuCard(children: [
-            _menuItem(
-              icon: Icons.person_outline_rounded,
-              label: l10n.editProfile,
-              onTap: () => Navigator.pushNamed(context, '/edit-profile'),
+      body: _loading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+              children: [
+                _profileHeader(),
+                SizedBox(height: 24.h),
+                _sectionTitle(l10n.profileAccount),
+                SizedBox(height: 8.h),
+                _menuCard(children: [
+                  _menuItem(
+                    icon: Icons.person_outline_rounded,
+                    label: l10n.editProfile,
+                    onTap: () => Navigator.pushNamed(context, '/edit-profile'),
+                  ),
+                ]),
+                SizedBox(height: 20.h),
+                _sectionTitle(l10n.profileGeneral),
+                SizedBox(height: 8.h),
+                _menuCard(children: [
+                  _menuItem(
+                    icon: Icons.help_outline_rounded,
+                    label: l10n.help,
+                    onTap: () {},
+                  ),
+                  _divider(),
+                  _menuItem(
+                    icon: Icons.lock_outline_rounded,
+                    label: l10n.privacyPolicy,
+                    onTap: () {},
+                  ),
+                  _divider(),
+                  _menuItem(
+                    icon: Icons.description_outlined,
+                    label: l10n.termsOfService,
+                    onTap: () {},
+                  ),
+                  _divider(),
+                  _menuItem(
+                    icon: Icons.star_outline_rounded,
+                    label: l10n.rateApp,
+                    onTap: () {},
+                  ),
+                ]),
+                SizedBox(height: 100.h),
+              ],
             ),
-          ]),
-          SizedBox(height: 20.h),
-          _sectionTitle(l10n.profileGeneral),
-          SizedBox(height: 8.h),
-          _menuCard(children: [
-            _menuItem(
-              icon: Icons.help_outline_rounded,
-              label: l10n.help,
-              onTap: () {},
-            ),
-            _divider(),
-            _menuItem(
-              icon: Icons.lock_outline_rounded,
-              label: l10n.privacyPolicy,
-              onTap: () {},
-            ),
-            _divider(),
-            _menuItem(
-              icon: Icons.description_outlined,
-              label: l10n.termsOfService,
-              onTap: () {},
-            ),
-            _divider(),
-            _menuItem(
-              icon: Icons.star_outline_rounded,
-              label: l10n.rateApp,
-              onTap: () {},
-            ),
-          ]),
-          SizedBox(height: 100.h),
-        ],
-      ),
     );
   }
 
   Widget _profileHeader() {
+    final name = _user?.name ?? '-';
+    final email = _user?.email ?? '-';
+    final avatar = _user?.avatar;
+    final baseUrl = dotenv.env['APP_BACKEND'] ?? '';
+    final hasAvatar = avatar != null && avatar.isNotEmpty;
+
     return Container(
       padding: EdgeInsets.all(16.h),
       decoration: BoxDecoration(
@@ -109,11 +138,16 @@ class _ProfilePageState extends State<ProfilePage> {
               child: CircleAvatar(
                 radius: 30.r,
                 backgroundColor: softColor,
-                child: Icon(
-                  Icons.person_rounded,
-                  size: 36.h,
-                  color: primaryColor,
-                ),
+                backgroundImage: hasAvatar
+                    ? NetworkImage('$baseUrl$avatar')
+                    : null,
+                child: hasAvatar
+                    ? null
+                    : Icon(
+                        Icons.person_rounded,
+                        size: 36.h,
+                        color: primaryColor,
+                      ),
               ),
             ),
           ),
@@ -123,7 +157,7 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Budi Santoso',
+                  name,
                   style: primaryTextStyle.copyWith(
                     fontSize: 16.sp,
                     fontWeight: bold,
@@ -133,7 +167,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 SizedBox(height: 2.h),
                 Text(
-                  'budi.santoso@email.com',
+                  email,
                   style: secondaryTextStyle.copyWith(
                     fontSize: 12.sp,
                     fontWeight: regular,
@@ -260,8 +294,10 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.of(ctx).pop();
+              await AuthService().clearSession();
+              if (!context.mounted) return;
               Navigator.of(context).pushNamedAndRemoveUntil(
                 '/sign-in',
                 (route) => false,
