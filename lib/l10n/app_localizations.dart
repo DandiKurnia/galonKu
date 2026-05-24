@@ -421,6 +421,102 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Profil berhasil diperbarui'**
   String get saveSuccess;
+
+  /// No description provided for @checkoutAppbar.
+  ///
+  /// In id, this message translates to:
+  /// **'Checkout'**
+  String get checkoutAppbar;
+
+  /// No description provided for @water.
+  ///
+  /// In id, this message translates to:
+  /// **'Air Minum'**
+  String get water;
+
+  /// No description provided for @subTextGalon.
+  ///
+  /// In id, this message translates to:
+  /// **'Air Galon (19L)'**
+  String get subTextGalon;
+
+  /// No description provided for @countGallon.
+  ///
+  /// In id, this message translates to:
+  /// **'Jumlah Galon'**
+  String get countGallon;
+
+  /// No description provided for @locationName.
+  ///
+  /// In id, this message translates to:
+  /// **'Lokasi'**
+  String get locationName;
+
+  /// No description provided for @machine.
+  ///
+  /// In id, this message translates to:
+  /// **'Mesin'**
+  String get machine;
+
+  /// No description provided for @count.
+  ///
+  /// In id, this message translates to:
+  /// **'Jumlah'**
+  String get count;
+
+  /// No description provided for @total.
+  ///
+  /// In id, this message translates to:
+  /// **'Total'**
+  String get total;
+
+  /// No description provided for @chooseGallon.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih Galon'**
+  String get chooseGallon;
+
+  /// No description provided for @quantity.
+  ///
+  /// In id, this message translates to:
+  /// **'Jumlah'**
+  String get quantity;
+
+  /// No description provided for @fillLocation.
+  ///
+  /// In id, this message translates to:
+  /// **'Tujuan Pengisian'**
+  String get fillLocation;
+
+  /// No description provided for @paymentMethod.
+  ///
+  /// In id, this message translates to:
+  /// **'Metode Pembayaran'**
+  String get paymentMethod;
+
+  /// No description provided for @subtotal.
+  ///
+  /// In id, this message translates to:
+  /// **'Subtotal'**
+  String get subtotal;
+
+  /// No description provided for @pay.
+  ///
+  /// In id, this message translates to:
+  /// **'Bayar'**
+  String get pay;
+
+  /// No description provided for @balance.
+  ///
+  /// In id, this message translates to:
+  /// **'Saldo'**
+  String get balance;
+
+  /// No description provided for @checkoutSuccess.
+  ///
+  /// In id, this message translates to:
+  /// **'Pembelian berhasil! Memproses air...'**
+  String get checkoutSuccess;
 }
 
 class _AppLocalizationsDelegate

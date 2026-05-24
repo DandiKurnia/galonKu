@@ -11,48 +11,88 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final ScrollController _scrollController = ScrollController();
+  bool _isScrolled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final scrolled = _scrollController.offset > 4;
+    if (scrolled != _isScrolled) {
+      setState(() => _isScrolled = scrolled);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Stack(
       children: [
-        header(context),
-        headline(context),
-        SizedBox(height: 16.h),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Text(
-            AppLocalizations.of(context)!.tutorial,
-            style: primaryTextStyle.copyWith(fontSize: 16.sp, fontWeight: bold),
-          ),
-        ),
-        SizedBox(height: 12.h),
-        tutorial(context),
-        SizedBox(height: 16.h),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Positioned.fill(
+          child: ListView(
+            controller: _scrollController,
             children: [
-              Text(
-                AppLocalizations.of(context)!.location,
-                style: primaryTextStyle.copyWith(
-                  fontSize: 16.sp,
-                  fontWeight: bold,
+              header(context),
+              headline(context),
+              SizedBox(height: 16.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Text(
+                  AppLocalizations.of(context)!.tutorial,
+                  style: primaryTextStyle.copyWith(fontSize: 16.sp, fontWeight: bold),
                 ),
               ),
-              Text(
-                AppLocalizations.of(context)!.findAll,
-                style: headingBlueTextStyle.copyWith(
-                  fontSize: 14.sp,
-                  fontWeight: bold,
+              SizedBox(height: 12.h),
+              tutorial(context),
+              SizedBox(height: 16.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.location,
+                      style: primaryTextStyle.copyWith(
+                        fontSize: 16.sp,
+                        fontWeight: bold,
+                      ),
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!.findAll,
+                      style: headingBlueTextStyle.copyWith(
+                        fontSize: 14.sp,
+                        fontWeight: bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              SizedBox(height: 12.h),
+              locationStore(),
+              SizedBox(height: 100.h),
             ],
           ),
         ),
-        SizedBox(height: 12.h),
-        locationStore(),
-        SizedBox(height: 16.h),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            color: _isScrolled ? whiteColor : transparentColor,
+            height: MediaQuery.of(context).padding.top,
+          ),
+        ),
       ],
     );
   }

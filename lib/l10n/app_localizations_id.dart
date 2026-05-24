@@ -172,4 +172,52 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get saveSuccess => 'Profil berhasil diperbarui';
+
+  @override
+  String get checkoutAppbar => 'Checkout';
+
+  @override
+  String get water => 'Air Minum';
+
+  @override
+  String get subTextGalon => 'Air Galon (19L)';
+
+  @override
+  String get countGallon => 'Jumlah Galon';
+
+  @override
+  String get locationName => 'Lokasi';
+
+  @override
+  String get machine => 'Mesin';
+
+  @override
+  String get count => 'Jumlah';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get chooseGallon => 'Pilih Galon';
+
+  @override
+  String get quantity => 'Jumlah';
+
+  @override
+  String get fillLocation => 'Tujuan Pengisian';
+
+  @override
+  String get paymentMethod => 'Metode Pembayaran';
+
+  @override
+  String get subtotal => 'Subtotal';
+
+  @override
+  String get pay => 'Bayar';
+
+  @override
+  String get balance => 'Saldo';
+
+  @override
+  String get checkoutSuccess => 'Pembelian berhasil! Memproses air...';
 }

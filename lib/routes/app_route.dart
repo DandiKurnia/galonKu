@@ -4,6 +4,7 @@ import 'package:galonku/pages/sign_in_page.dart';
 import 'package:galonku/pages/splash_page.dart';
 import 'package:galonku/pages/sign_up_page.dart';
 import 'package:galonku/pages/home/main_page.dart';
+import 'package:galonku/pages/checkout_page.dart';
 
 class AppRoute {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -23,6 +24,9 @@ class AppRoute {
         break;
       case '/edit-profile':
         page = const EditProfilePage();
+        break;
+      case '/checkout':
+        page = const CheckoutPage();
         break;
       default:
         return null;

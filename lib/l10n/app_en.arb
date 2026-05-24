@@ -64,5 +64,23 @@
   "address": "Address",
   "save": "Save",
   "changePhoto": "Change Photo",
-  "saveSuccess": "Profile updated successfully"
+  "saveSuccess": "Profile updated successfully",
+
+  "checkoutAppbar": "Checkout",
+  "water": "Water",
+  "subTextGalon": "Gallon Water (19L)",
+  "countGallon": "Gallon Count",
+  "locationName": "Location",
+  "machine": "Machine",
+  "count": "Count",
+  "total": "Total",
+
+  "chooseGallon": "Choose Gallon",
+  "quantity": "Quantity",
+  "fillLocation": "Fill Location",
+  "paymentMethod": "Payment Method",
+  "subtotal": "Subtotal",
+  "pay": "Pay",
+  "balance": "Balance",
+  "checkoutSuccess": "Purchase successful! Processing water..."
 }

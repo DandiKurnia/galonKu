@@ -173,4 +173,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saveSuccess => 'Profile updated successfully';
+
+  @override
+  String get checkoutAppbar => 'Checkout';
+
+  @override
+  String get water => 'Water';
+
+  @override
+  String get subTextGalon => 'Gallon Water (19L)';
+
+  @override
+  String get countGallon => 'Gallon Count';
+
+  @override
+  String get locationName => 'Location';
+
+  @override
+  String get machine => 'Machine';
+
+  @override
+  String get count => 'Count';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get chooseGallon => 'Choose Gallon';
+
+  @override
+  String get quantity => 'Quantity';
+
+  @override
+  String get fillLocation => 'Fill Location';
+
+  @override
+  String get paymentMethod => 'Payment Method';
+
+  @override
+  String get subtotal => 'Subtotal';
+
+  @override
+  String get pay => 'Pay';
+
+  @override
+  String get balance => 'Balance';
+
+  @override
+  String get checkoutSuccess => 'Purchase successful! Processing water...';
 }
