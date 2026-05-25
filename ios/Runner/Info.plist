@@ -49,5 +49,7 @@
 		<false/>
 		<key>NSCameraUsageDescription</key>
 		<string>Galonku perlu akses kamera untuk scan QR mesin galon</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Galonku perlu akses lokasi untuk menampilkan posisi Anda di peta dan mencari toko terdekat</string>
 	</dict>
 </plist>

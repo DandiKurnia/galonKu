@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
 import 'package:galonku/services/opencage_service.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 class LocationPage extends StatefulWidget {
@@ -29,6 +30,8 @@ class _LocationPageState extends State<LocationPage> {
 
   static const LatLng _margondaDepok = LatLng(-6.3795, 106.8316);
   LatLng _markerPosition = _margondaDepok;
+  LatLng? _userPosition;
+  bool _locatingUser = false;
 
   final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
@@ -42,6 +45,7 @@ class _LocationPageState extends State<LocationPage> {
         _isFocused = _focusNode.hasFocus;
       });
     });
+    _locateMe(moveCamera: true);
   }
 
   @override
@@ -102,6 +106,63 @@ class _LocationPageState extends State<LocationPage> {
       _suggestions = const [];
     });
     _mapController.move(result.location, 16);
+  }
+
+  Future<void> _locateMe({bool moveCamera = true}) async {
+    if (_locatingUser) return;
+    setState(() => _locatingUser = true);
+
+    try {
+      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        _showLocationMessage('Aktifkan layanan lokasi untuk melanjutkan');
+        return;
+      }
+
+      var permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          _showLocationMessage('Izin lokasi ditolak');
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        _showLocationMessage(
+          'Izin lokasi diblokir. Buka pengaturan untuk mengaktifkannya.',
+        );
+        return;
+      }
+
+      final position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          timeLimit: Duration(seconds: 15),
+        ),
+      );
+
+      if (!mounted) return;
+      final latLng = LatLng(position.latitude, position.longitude);
+      setState(() {
+        _userPosition = latLng;
+        _markerPosition = latLng;
+      });
+      if (moveCamera) {
+        _mapController.move(latLng, 16);
+      }
+    } catch (e) {
+      _showLocationMessage('Gagal mendapatkan lokasi: $e');
+    } finally {
+      if (mounted) setState(() => _locatingUser = false);
+    }
+  }
+
+  void _showLocationMessage(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), behavior: SnackBarBehavior.floating),
+    );
   }
 
   @override
@@ -323,6 +384,35 @@ class _LocationPageState extends State<LocationPage> {
   }
 
   Container maps() {
+    final markers = <Marker>[
+      Marker(
+        point: _markerPosition,
+        width: 40,
+        height: 40,
+        child: Icon(Icons.location_on, color: primaryColor, size: 40),
+      ),
+      if (_userPosition != null)
+        Marker(
+          point: _userPosition!,
+          width: 24,
+          height: 24,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              shape: BoxShape.circle,
+              border: Border.all(color: whiteColor, width: 3),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blue.withValues(alpha: 0.4),
+                  blurRadius: 8,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+          ),
+        ),
+    ];
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w),
       height: 210.h,
@@ -331,28 +421,53 @@ class _LocationPageState extends State<LocationPage> {
         borderRadius: BorderRadius.circular(15),
         border: Border.all(color: Colors.grey.withValues(alpha: 0.5), width: 1),
       ),
-      child: FlutterMap(
-        mapController: _mapController,
-        options: const MapOptions(
-          initialCenter: _margondaDepok,
-          initialZoom: 16,
-          minZoom: 3,
-          maxZoom: 19,
-        ),
+      child: Stack(
         children: [
-          TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'com.galonku.app',
-          ),
-          MarkerLayer(
-            markers: [
-              Marker(
-                point: _markerPosition,
-                width: 40,
-                height: 40,
-                child: Icon(Icons.location_on, color: primaryColor, size: 40),
+          FlutterMap(
+            mapController: _mapController,
+            options: const MapOptions(
+              initialCenter: _margondaDepok,
+              initialZoom: 16,
+              minZoom: 3,
+              maxZoom: 19,
+            ),
+            children: [
+              TileLayer(
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'com.galonku.app',
               ),
+              MarkerLayer(markers: markers),
             ],
+          ),
+          Positioned(
+            right: 12.w,
+            bottom: 12.h,
+            child: Material(
+              color: whiteColor,
+              shape: const CircleBorder(),
+              elevation: 3,
+              child: InkWell(
+                customBorder: const CircleBorder(),
+                onTap: _locatingUser ? null : () => _locateMe(),
+                child: Padding(
+                  padding: EdgeInsets.all(10.h),
+                  child: _locatingUser
+                      ? SizedBox(
+                          width: 18.h,
+                          height: 18.h,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: primaryColor,
+                          ),
+                        )
+                      : Icon(
+                          Icons.my_location_rounded,
+                          color: primaryColor,
+                          size: 20.h,
+                        ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
