@@ -1,7 +1,11 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
+import 'package:galonku/models/address_model.dart';
+import 'package:galonku/services/address_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,6 +15,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final AddressService _addressService = AddressService();
+  AddressModel? _addressModel;
+  bool _loading = true;
+  String? _errorMessage;
   final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
 
@@ -18,6 +26,31 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    _loadAddress();
+  }
+
+  Future<void> _loadAddress() async {
+    try {
+      final addressData = await _addressService.getAddresses();
+      if (!mounted) return;
+      setState(() {
+        _addressModel = addressData;
+        _errorMessage = null;
+        _loading = false;
+      });
+    } catch (e, stack) {
+      developer.log(
+        'Failed to load addresses',
+        name: 'HomePage',
+        error: e,
+        stackTrace: stack,
+      );
+      if (!mounted) return;
+      setState(() {
+        _errorMessage = e.toString();
+        _loading = false;
+      });
+    }
   }
 
   @override
@@ -49,7 +82,10 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Text(
                   AppLocalizations.of(context)!.tutorial,
-                  style: primaryTextStyle.copyWith(fontSize: 16.sp, fontWeight: bold),
+                  style: primaryTextStyle.copyWith(
+                    fontSize: 16.sp,
+                    fontWeight: bold,
+                  ),
                 ),
               ),
               SizedBox(height: 12.h),
@@ -79,7 +115,6 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 12.h),
               locationStore(),
-              SizedBox(height: 100.h),
             ],
           ),
         ),
@@ -98,40 +133,89 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget locationStore() {
-    final stores = [
-      {
-        'name': 'Aqua Jakarta Timur',
-        'address': 'Jl. Pendidikan No. 123',
-        'distance': '2 Km',
-        'rating': '4.8',
-      },
-      {
-        'name': 'Le Minerale Cawang',
-        'address': 'Jl. Mawar Raya No. 45',
-        'distance': '3 Km',
-        'rating': '4.7',
-      },
-      {
-        'name': 'Aqua Cipinang',
-        'address': 'Jl. Melati Indah No. 12',
-        'distance': '4 Km',
-        'rating': '4.6',
-      },
-    ];
+    if (_loading) {
+      return SizedBox(
+        height: 220.h,
+        child: Center(child: CircularProgressIndicator(color: primaryColor)),
+      );
+    }
 
-    return SizedBox(
-      height: 200.h,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        itemCount: stores.length,
-        separatorBuilder: (_, __) => SizedBox(width: 12.w),
-        itemBuilder: (context, index) => _storeCard(stores[index]),
-      ),
+    if (_errorMessage != null) {
+      return SizedBox(
+        height: 220.h,
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.error_outline, color: errorColor, size: 32.h),
+                SizedBox(height: 8.h),
+                Text(
+                  _errorMessage!,
+                  textAlign: TextAlign.center,
+                  style: secondaryTextStyle.copyWith(fontSize: 11.sp),
+                ),
+                SizedBox(height: 8.h),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _loading = true;
+                      _errorMessage = null;
+                    });
+                    _loadAddress();
+                  },
+                  child: Text(
+                    'Coba lagi',
+                    style: headingBlueTextStyle.copyWith(
+                      fontSize: 12.sp,
+                      fontWeight: semiBold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    final stores = _addressModel?.data ?? [];
+
+    if (stores.isEmpty) {
+      return SizedBox(
+        height: 220.h,
+        child: Center(
+          child: Text(
+            'Belum ada toko tersedia',
+            style: secondaryTextStyle.copyWith(fontSize: 12.sp),
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      children: [
+        SizedBox(
+          height: 220.h,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            itemCount: stores.length,
+            separatorBuilder: (_, __) => SizedBox(width: 12.w),
+            itemBuilder: (context, index) => _storeCard(stores[index]),
+          ),
+        ),
+        SizedBox(height: 50.h),
+      ],
     );
   }
 
-  Widget _storeCard(Map<String, String> store) {
+  Widget _storeCard(Datum store) {
+    final activeDevices = store.devices
+        .where((d) => d.status.toUpperCase() == 'ACTIVE')
+        .length;
+
     return Container(
       width: 220.w,
       decoration: BoxDecoration(
@@ -177,10 +261,14 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.location_on, size: 12.h, color: primaryColor),
+                      Icon(
+                        Icons.precision_manufacturing_rounded,
+                        size: 12.h,
+                        color: primaryColor,
+                      ),
                       SizedBox(width: 2.w),
                       Text(
-                        store['distance']!,
+                        '$activeDevices/${store.devices.length}',
                         style: primaryTextStyle.copyWith(
                           fontSize: 10.sp,
                           fontWeight: semiBold,
@@ -198,7 +286,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  store['name']!,
+                  store.name,
                   style: primaryTextStyle.copyWith(
                     fontSize: 13.sp,
                     fontWeight: semiBold,
@@ -208,12 +296,12 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  store['address']!,
+                  store.address,
                   style: secondaryTextStyle.copyWith(
                     fontSize: 11.sp,
                     fontWeight: regular,
                   ),
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 8.h),
@@ -226,7 +314,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     SizedBox(width: 2.w),
                     Text(
-                      store['rating']!,
+                      '4.3',
                       style: primaryTextStyle.copyWith(
                         fontSize: 11.sp,
                         fontWeight: semiBold,
@@ -248,6 +336,39 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _deviceChip(Device device) {
+    final isActive = device.status.toUpperCase() == 'ACTIVE';
+    final color = isActive ? primaryColor : Colors.grey;
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(6.r),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 0.5),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 6.w,
+            height: 6.w,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          ),
+          SizedBox(width: 4.w),
+          Text(
+            device.name,
+            style: primaryTextStyle.copyWith(
+              fontSize: 10.sp,
+              fontWeight: medium,
+              color: color,
             ),
           ),
         ],

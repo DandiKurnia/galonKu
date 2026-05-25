@@ -1,15 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
-import 'package:galonku/models/sign_in_model.dart';
 import 'package:galonku/models/user_profile_model.dart';
 import 'package:galonku/services/auth_service.dart';
 import 'package:galonku/services/profile_service.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -19,7 +15,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  File? _imageFile;
   Data? _userProfile;
   bool _loading = true;
 
@@ -36,13 +31,6 @@ class _ProfilePageState extends State<ProfilePage> {
       _userProfile = response.data;
       _loading = false;
     });
-  }
-
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final picked = await picker.pickImage(source: ImageSource.gallery);
-    if (picked == null) return;
-    setState(() => _imageFile = File(picked.path));
   }
 
   @override
@@ -131,12 +119,6 @@ class _ProfilePageState extends State<ProfilePage> {
     final email = _userProfile?.email ?? '-';
     final remoteAvatar = _userProfile?.avatar;
     final hasRemote = remoteAvatar != null && remoteAvatar.isNotEmpty;
-    ImageProvider? avatarImage;
-    if (_imageFile != null) {
-      avatarImage = FileImage(_imageFile!);
-    } else if (hasRemote) {
-      avatarImage = NetworkImage('$baseUrl$remoteAvatar');
-    }
 
     return Container(
       padding: EdgeInsets.all(16.h),
