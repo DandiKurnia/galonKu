@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
+import 'package:galonku/models/user_profile_model.dart';
+import 'package:galonku/services/profile_service.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -11,22 +17,91 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  final _nameController = TextEditingController(text: 'Budi Santoso');
-  final _emailController = TextEditingController(
-    text: 'budi.santoso@email.com',
-  );
-  final _phoneController = TextEditingController(text: '+62 812 3456 7890');
-  final _addressController = TextEditingController(
-    text: 'Jl. Pendidikan No. 123, Jakarta Timur',
-  );
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+
+  File? _imageFile;
+  Data? _userProfile;
+  bool _loading = true;
+  bool _saving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
-    _addressController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadUser() async {
+    try {
+      final response = await ProfileService().getProfile();
+      if (!mounted) return;
+      setState(() {
+        _userProfile = response.data;
+        _nameController.text = response.data.name;
+        _emailController.text = response.data.email;
+        _phoneController.text = response.data.phoneNumber ?? '';
+        _loading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _loading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString().replaceFirst('Exception: ', '')),
+          backgroundColor: errorColor,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+    if (picked == null) return;
+    setState(() => _imageFile = File(picked.path));
+  }
+
+  Future<void> _save(AppLocalizations l10n) async {
+    if (_saving) return;
+    setState(() => _saving = true);
+    try {
+      await ProfileService().updateProfile(
+        _nameController.text.trim(),
+        _emailController.text.trim(),
+        _phoneController.text.trim(),
+        _imageFile,
+      );
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.saveSuccess),
+          backgroundColor: successColor,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      Navigator.pop(context, true);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString().replaceFirst('Exception: ', '')),
+          backgroundColor: errorColor,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _saving = false);
+    }
   }
 
   @override
@@ -56,46 +131,52 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
         ),
       ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-        children: [
-          _avatarSection(l10n),
-          SizedBox(height: 24.h),
-          _inputField(
-            label: l10n.name,
-            icon: Icons.person_outline_rounded,
-            controller: _nameController,
-          ),
-          SizedBox(height: 16.h),
-          _inputField(
-            label: l10n.email,
-            icon: Icons.email_outlined,
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-          ),
-          SizedBox(height: 16.h),
-          _inputField(
-            label: l10n.phoneNumber,
-            icon: Icons.phone_outlined,
-            controller: _phoneController,
-            keyboardType: TextInputType.phone,
-          ),
-          SizedBox(height: 16.h),
-          _inputField(
-            label: l10n.address,
-            icon: Icons.location_on_outlined,
-            controller: _addressController,
-            maxLines: 2,
-          ),
-          SizedBox(height: 32.h),
-          _saveButton(l10n),
-          SizedBox(height: 24.h),
-        ],
-      ),
+      body: _loading || _userProfile == null
+          ? const Center(child: CircularProgressIndicator())
+          : ListView(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+              children: [
+                _avatarSection(l10n),
+                SizedBox(height: 24.h),
+                _inputField(
+                  label: l10n.name,
+                  icon: Icons.person_outline_rounded,
+                  controller: _nameController,
+                ),
+                SizedBox(height: 16.h),
+                _inputField(
+                  label: l10n.email,
+                  icon: Icons.email_outlined,
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                SizedBox(height: 16.h),
+                _inputField(
+                  label: l10n.phoneNumber,
+                  icon: Icons.phone_outlined,
+                  controller: _phoneController,
+                  keyboardType: TextInputType.phone,
+                ),
+                SizedBox(height: 32.h),
+                _saveButton(l10n),
+                SizedBox(height: 24.h),
+              ],
+            ),
     );
   }
 
   Widget _avatarSection(AppLocalizations l10n) {
+    final baseUrl = dotenv.env['APP_BACKEND'] ?? '';
+    final remoteAvatar = _userProfile?.avatar;
+    final hasRemote = remoteAvatar != null && remoteAvatar.isNotEmpty;
+
+    ImageProvider? avatarImage;
+    if (_imageFile != null) {
+      avatarImage = FileImage(_imageFile!);
+    } else if (hasRemote) {
+      avatarImage = NetworkImage('$baseUrl$remoteAvatar');
+    }
+
     return Center(
       child: Column(
         children: [
@@ -118,11 +199,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   child: CircleAvatar(
                     radius: 46.r,
                     backgroundColor: softColor,
-                    child: Icon(
-                      Icons.person_rounded,
-                      size: 56.h,
-                      color: primaryColor,
-                    ),
+                    backgroundImage: avatarImage,
+                    child: avatarImage == null
+                        ? Icon(
+                            Icons.person_rounded,
+                            size: 56.h,
+                            color: primaryColor,
+                          )
+                        : null,
                   ),
                 ),
               ),
@@ -130,7 +214,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 bottom: 0,
                 right: 0,
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: _pickImage,
                   child: Container(
                     padding: EdgeInsets.all(8.h),
                     decoration: BoxDecoration(
@@ -149,11 +233,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ],
           ),
           SizedBox(height: 12.h),
-          Text(
-            l10n.changePhoto,
-            style: headingBlueTextStyle.copyWith(
-              fontSize: 13.sp,
-              fontWeight: semiBold,
+          GestureDetector(
+            onTap: _pickImage,
+            child: Text(
+              l10n.changePhoto,
+              style: headingBlueTextStyle.copyWith(
+                fontSize: 13.sp,
+                fontWeight: semiBold,
+              ),
             ),
           ),
         ],
@@ -218,29 +305,29 @@ class _EditProfilePageState extends State<EditProfilePage> {
       height: 50.h,
       width: double.infinity,
       child: TextButton(
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.saveSuccess),
-              backgroundColor: successColor,
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-          Navigator.pop(context);
-        },
+        onPressed: _saving ? null : () => _save(l10n),
         style: TextButton.styleFrom(
           backgroundColor: primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24.r),
           ),
         ),
-        child: Text(
-          l10n.save,
-          style: headingTextStyle.copyWith(
-            fontSize: 13.sp,
-            fontWeight: semiBold,
-          ),
-        ),
+        child: _saving
+            ? SizedBox(
+                width: 20.h,
+                height: 20.h,
+                child: CircularProgressIndicator(
+                  color: whiteColor,
+                  strokeWidth: 2.5,
+                ),
+              )
+            : Text(
+                l10n.save,
+                style: headingTextStyle.copyWith(
+                  fontSize: 13.sp,
+                  fontWeight: semiBold,
+                ),
+              ),
       ),
     );
   }

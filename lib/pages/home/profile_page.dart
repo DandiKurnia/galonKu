@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
 import 'package:galonku/models/sign_in_model.dart';
+import 'package:galonku/models/user_profile_model.dart';
 import 'package:galonku/services/auth_service.dart';
+import 'package:galonku/services/profile_service.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -14,7 +19,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  User? _user;
+  File? _imageFile;
+  Data? _userProfile;
   bool _loading = true;
 
   @override
@@ -24,12 +30,19 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _loadUser() async {
-    final user = await AuthService().getUser();
+    final response = await ProfileService().getProfile();
     if (!mounted) return;
     setState(() {
-      _user = user;
+      _userProfile = response.data;
       _loading = false;
     });
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+    if (picked == null) return;
+    setState(() => _imageFile = File(picked.path));
   }
 
   @override
@@ -66,41 +79,46 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(height: 24.h),
                 _sectionTitle(l10n.profileAccount),
                 SizedBox(height: 8.h),
-                _menuCard(children: [
-                  _menuItem(
-                    icon: Icons.person_outline_rounded,
-                    label: l10n.editProfile,
-                    onTap: () => Navigator.pushNamed(context, '/edit-profile'),
-                  ),
-                ]),
+                _menuCard(
+                  children: [
+                    _menuItem(
+                      icon: Icons.person_outline_rounded,
+                      label: l10n.editProfile,
+                      onTap: () =>
+                          Navigator.pushNamed(context, '/edit-profile'),
+                    ),
+                  ],
+                ),
                 SizedBox(height: 20.h),
                 _sectionTitle(l10n.profileGeneral),
                 SizedBox(height: 8.h),
-                _menuCard(children: [
-                  _menuItem(
-                    icon: Icons.help_outline_rounded,
-                    label: l10n.help,
-                    onTap: () {},
-                  ),
-                  _divider(),
-                  _menuItem(
-                    icon: Icons.lock_outline_rounded,
-                    label: l10n.privacyPolicy,
-                    onTap: () {},
-                  ),
-                  _divider(),
-                  _menuItem(
-                    icon: Icons.description_outlined,
-                    label: l10n.termsOfService,
-                    onTap: () {},
-                  ),
-                  _divider(),
-                  _menuItem(
-                    icon: Icons.star_outline_rounded,
-                    label: l10n.rateApp,
-                    onTap: () {},
-                  ),
-                ]),
+                _menuCard(
+                  children: [
+                    _menuItem(
+                      icon: Icons.help_outline_rounded,
+                      label: l10n.help,
+                      onTap: () {},
+                    ),
+                    _divider(),
+                    _menuItem(
+                      icon: Icons.lock_outline_rounded,
+                      label: l10n.privacyPolicy,
+                      onTap: () {},
+                    ),
+                    _divider(),
+                    _menuItem(
+                      icon: Icons.description_outlined,
+                      label: l10n.termsOfService,
+                      onTap: () {},
+                    ),
+                    _divider(),
+                    _menuItem(
+                      icon: Icons.star_outline_rounded,
+                      label: l10n.rateApp,
+                      onTap: () {},
+                    ),
+                  ],
+                ),
                 SizedBox(height: 100.h),
               ],
             ),
@@ -108,11 +126,17 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _profileHeader() {
-    final name = _user?.name ?? '-';
-    final email = _user?.email ?? '-';
-    final avatar = _user?.avatar;
     final baseUrl = dotenv.env['APP_BACKEND'] ?? '';
-    final hasAvatar = avatar != null && avatar.isNotEmpty;
+    final name = _userProfile?.name ?? '-';
+    final email = _userProfile?.email ?? '-';
+    final remoteAvatar = _userProfile?.avatar;
+    final hasRemote = remoteAvatar != null && remoteAvatar.isNotEmpty;
+    ImageProvider? avatarImage;
+    if (_imageFile != null) {
+      avatarImage = FileImage(_imageFile!);
+    } else if (hasRemote) {
+      avatarImage = NetworkImage('$baseUrl$remoteAvatar');
+    }
 
     return Container(
       padding: EdgeInsets.all(16.h),
@@ -138,10 +162,10 @@ class _ProfilePageState extends State<ProfilePage> {
               child: CircleAvatar(
                 radius: 30.r,
                 backgroundColor: softColor,
-                backgroundImage: hasAvatar
-                    ? NetworkImage('$baseUrl$avatar')
+                backgroundImage: hasRemote
+                    ? NetworkImage('$baseUrl$remoteAvatar')
                     : null,
-                child: hasAvatar
+                child: hasRemote
                     ? null
                     : Icon(
                         Icons.person_rounded,
@@ -270,10 +294,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         title: Text(
           l10n.logoutConfirmTitle,
-          style: primaryTextStyle.copyWith(
-            fontSize: 15.sp,
-            fontWeight: bold,
-          ),
+          style: primaryTextStyle.copyWith(fontSize: 15.sp, fontWeight: bold),
         ),
         content: Text(
           l10n.logoutConfirmMessage,
@@ -298,17 +319,13 @@ class _ProfilePageState extends State<ProfilePage> {
               Navigator.of(ctx).pop();
               await AuthService().clearSession();
               if (!context.mounted) return;
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                '/sign-in',
-                (route) => false,
-              );
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil('/sign-in', (route) => false);
             },
             child: Text(
               l10n.logout,
-              style: errorTextStyle.copyWith(
-                fontSize: 13.sp,
-                fontWeight: bold,
-              ),
+              style: errorTextStyle.copyWith(fontSize: 13.sp, fontWeight: bold),
             ),
           ),
         ],
