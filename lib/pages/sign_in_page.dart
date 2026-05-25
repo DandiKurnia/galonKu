@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
+import 'package:galonku/services/auth_service.dart';
+import 'package:galonku/services/sign_in_service.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -12,6 +14,45 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   bool _obscureText = true;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleSignIn() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Email dan password wajib diisi')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      final result = await SignInService().signIn(email, password);
+      await AuthService().saveSession(result);
+
+      if (!mounted) return;
+      Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString().replaceFirst('Exception: ', ''))),
+      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +81,7 @@ class _SignInPageState extends State<SignInPage> {
                   SizedBox(height: 20.h),
                   passwordInput(context),
                   SizedBox(height: 30.h),
-                  const SignInButton(),
+                  signInButton(context),
                 ],
               ),
             ),
@@ -48,6 +89,38 @@ class _SignInPageState extends State<SignInPage> {
             footer(context),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget signInButton(BuildContext context) {
+    return SizedBox(
+      height: 50.h,
+      width: double.infinity,
+      child: TextButton(
+        onPressed: _isLoading ? null : _handleSignIn,
+        style: TextButton.styleFrom(
+          backgroundColor: primaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+        ),
+        child: _isLoading
+            ? SizedBox(
+                height: 20.h,
+                width: 20.h,
+                child: const CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            : Text(
+                AppLocalizations.of(context)!.signIn,
+                style: headingTextStyle.copyWith(
+                  fontSize: 16.sp,
+                  fontWeight: medium,
+                ),
+              ),
       ),
     );
   }
@@ -110,6 +183,8 @@ class _SignInPageState extends State<SignInPage> {
                   SizedBox(width: 16.w),
                   Expanded(
                     child: TextField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
                       style: primaryTextStyle,
                       decoration: InputDecoration.collapsed(
                         hintText: AppLocalizations.of(context)!.email,
@@ -155,6 +230,7 @@ class _SignInPageState extends State<SignInPage> {
                   SizedBox(width: 16.w),
                   Expanded(
                     child: TextField(
+                      controller: _passwordController,
                       style: primaryTextStyle,
                       obscureText: _obscureText,
                       decoration: InputDecoration.collapsed(
@@ -216,37 +292,6 @@ class _SignInPageState extends State<SignInPage> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class SignInButton extends StatelessWidget {
-  const SignInButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50.h,
-      width: double.infinity,
-      child: TextButton(
-        onPressed: () {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/main',
-            (route) => false,
-          );
-        },
-        style: TextButton.styleFrom(
-          backgroundColor: primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
-          ),
-        ),
-        child: Text(
-          AppLocalizations.of(context)!.signIn,
-          style: headingTextStyle.copyWith(fontSize: 16.sp, fontWeight: medium),
-        ),
       ),
     );
   }

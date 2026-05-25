@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
+import 'package:galonku/services/auth_service.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -15,10 +16,15 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 1), () {
-      if (!mounted) return;
-      Navigator.pushReplacementNamed(context, '/sign-in');
-    });
+    _checkSession();
+  }
+
+  Future<void> _checkSession() async {
+    final isLoggedIn = await AuthService().isLoggedIn();
+    await Future.delayed(const Duration(seconds: 1));
+
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(context, isLoggedIn ? '/main' : '/sign-in');
   }
 
   @override
