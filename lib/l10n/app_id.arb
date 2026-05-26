@@ -46,6 +46,11 @@
   "statusTransaction": "Selesai",
   "cancelTransaction": "Dibatalkan",
   "showDetail": "Lihat Detail",
+  "transactionStatusPending": "Menunggu",
+  "transactionStatusPaid": "Dibayar",
+  "transactionStatusExpired": "Kedaluwarsa",
+  "transactionStatusFailed": "Gagal",
+  "transactionEmpty": "Belum ada transaksi",
 
   "profileAppbar": "Profil",
   "profileAccount": "Akun",

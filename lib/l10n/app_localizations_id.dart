@@ -117,6 +117,21 @@ class AppLocalizationsId extends AppLocalizations {
   String get showDetail => 'Lihat Detail';
 
   @override
+  String get transactionStatusPending => 'Menunggu';
+
+  @override
+  String get transactionStatusPaid => 'Dibayar';
+
+  @override
+  String get transactionStatusExpired => 'Kedaluwarsa';
+
+  @override
+  String get transactionStatusFailed => 'Gagal';
+
+  @override
+  String get transactionEmpty => 'Belum ada transaksi';
+
+  @override
   String get profileAppbar => 'Profil';
 
   @override

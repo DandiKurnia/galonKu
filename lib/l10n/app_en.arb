@@ -44,6 +44,11 @@
   "statusTransaction": "Completed",
   "cancelTransaction": "Cancelled",
   "showDetail": "Show Detail",
+  "transactionStatusPending": "Pending",
+  "transactionStatusPaid": "Paid",
+  "transactionStatusExpired": "Expired",
+  "transactionStatusFailed": "Failed",
+  "transactionEmpty": "No transactions yet",
 
   "profileAppbar": "Profile",
   "profileAccount": "Account",
