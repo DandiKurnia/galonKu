@@ -517,6 +517,90 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Pembelian berhasil! Memproses air...'**
   String get checkoutSuccess;
+
+  /// No description provided for @allStoresAppbar.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat Semua'**
+  String get allStoresAppbar;
+
+  /// No description provided for @storeOpen.
+  ///
+  /// In id, this message translates to:
+  /// **'Buka'**
+  String get storeOpen;
+
+  /// No description provided for @storeClosed.
+  ///
+  /// In id, this message translates to:
+  /// **'Tutup'**
+  String get storeClosed;
+
+  /// No description provided for @storeMachineCount.
+  ///
+  /// In id, this message translates to:
+  /// **'{active}/{total} mesin'**
+  String storeMachineCount(String active, String total);
+
+  /// No description provided for @storeEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada toko tersedia'**
+  String get storeEmpty;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In id, this message translates to:
+  /// **'Coba lagi'**
+  String get tryAgain;
+
+  /// No description provided for @detailStoreAppbar.
+  ///
+  /// In id, this message translates to:
+  /// **'Detail Toko'**
+  String get detailStoreAppbar;
+
+  /// No description provided for @detailStoreInvalidId.
+  ///
+  /// In id, this message translates to:
+  /// **'ID toko tidak valid'**
+  String get detailStoreInvalidId;
+
+  /// No description provided for @detailStoreMachineSection.
+  ///
+  /// In id, this message translates to:
+  /// **'Mesin ({active}/{total} aktif)'**
+  String detailStoreMachineSection(String active, String total);
+
+  /// No description provided for @detailStoreNoMachine.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada mesin'**
+  String get detailStoreNoMachine;
+
+  /// No description provided for @machineActive.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktif'**
+  String get machineActive;
+
+  /// No description provided for @machineInactive.
+  ///
+  /// In id, this message translates to:
+  /// **'Nonaktif'**
+  String get machineInactive;
+
+  /// No description provided for @openInMaps.
+  ///
+  /// In id, this message translates to:
+  /// **'Buka di Google Maps'**
+  String get openInMaps;
+
+  /// No description provided for @openMapsFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak bisa membuka Google Maps'**
+  String get openMapsFailed;
 }
 
 class _AppLocalizationsDelegate

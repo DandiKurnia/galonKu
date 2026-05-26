@@ -19,6 +19,7 @@ class StoresNotifier extends ChangeNotifier {
     AddressService? addressService,
     OpenCageService? geocoder,
     Distance? distance,
+    this.displayLimit = 10,
   })  : _addressService = addressService ?? AddressService(),
         _geocoder = geocoder ?? OpenCageService(),
         _distance = distance ?? const Distance();
@@ -26,12 +27,15 @@ class StoresNotifier extends ChangeNotifier {
   final AddressService _addressService;
   final OpenCageService _geocoder;
   final Distance _distance;
+  final int displayLimit;
 
   List<StoreEntry> _stores = const [];
   bool _loading = false;
   String? _error;
 
   List<StoreEntry> get stores => _stores;
+  List<StoreEntry> get displayedStores =>
+      _stores.length <= displayLimit ? _stores : _stores.take(displayLimit).toList();
   bool get loading => _loading;
   String? get error => _error;
 

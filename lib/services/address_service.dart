@@ -17,14 +17,18 @@ class AddressService {
   static final client = http.Client();
   final AuthService _authService = AuthService();
 
-  Future<AddressModel> getAddresses() async {
+  Future<AddressModel> getAddresses({int? limit}) async {
     final token = await _authService.getToken();
     if (token == null || token.isEmpty) {
       throw Exception('Sesi tidak ditemukan, silakan login kembali');
     }
 
+    final uri = Uri.parse('$_baseUrl/address').replace(
+      queryParameters: limit == null ? null : {'limit': '$limit'},
+    );
+
     final response = await client.get(
-      Uri.parse('$_baseUrl/address'),
+      uri,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -58,5 +62,35 @@ class AddressService {
       }
     } catch (_) {}
     return fallback;
+  }
+
+  Future<Datum> getAddressById(int id) async {
+    final token = await _authService.getToken();
+    if (token == null || token.isEmpty) {
+      throw Exception('Sesi tidak ditemukan, silakan login kembali');
+    }
+
+    final response = await client.get(
+      Uri.parse('$_baseUrl/address/$id'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> json = jsonDecode(response.body);
+      final data = json['data'];
+
+      if (data is Map<String, dynamic>) {
+        return Datum.fromJson(data);
+      }
+      if (data is List && data.isNotEmpty) {
+        return Datum.fromJson(data.first as Map<String, dynamic>);
+      }
+      throw Exception('Format data alamat tidak valid');
+    }
+
+    throw Exception(_extractMessage(response.body, 'Gagal memuat alamat'));
   }
 }

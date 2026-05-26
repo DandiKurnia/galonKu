@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:galonku/models/sign_in_model.dart';
+import 'package:galonku/models/auth_model.dart';
 import 'package:galonku/services/auth_service.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }

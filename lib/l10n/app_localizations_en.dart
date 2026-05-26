@@ -221,4 +221,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get checkoutSuccess => 'Purchase successful! Processing water...';
+
+  @override
+  String get allStoresAppbar => 'All Stores';
+
+  @override
+  String get storeOpen => 'Open';
+
+  @override
+  String get storeClosed => 'Closed';
+
+  @override
+  String storeMachineCount(String active, String total) {
+    return '$active/$total machines';
+  }
+
+  @override
+  String get storeEmpty => 'No stores available';
+
+  @override
+  String get tryAgain => 'Try again';
+
+  @override
+  String get detailStoreAppbar => 'Store Detail';
+
+  @override
+  String get detailStoreInvalidId => 'Invalid store ID';
+
+  @override
+  String detailStoreMachineSection(String active, String total) {
+    return 'Machines ($active/$total active)';
+  }
+
+  @override
+  String get detailStoreNoMachine => 'No machines yet';
+
+  @override
+  String get machineActive => 'Active';
+
+  @override
+  String get machineInactive => 'Inactive';
+
+  @override
+  String get openInMaps => 'Open in Google Maps';
+
+  @override
+  String get openMapsFailed => 'Unable to open Google Maps';
 }

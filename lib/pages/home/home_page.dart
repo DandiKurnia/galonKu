@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadAddress() async {
     try {
-      final addressData = await _addressService.getAddresses();
+      final addressData = await _addressService.getAddresses(limit: 5);
       if (!mounted) return;
       setState(() {
         _addressModel = addressData;
@@ -103,11 +103,15 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: bold,
                       ),
                     ),
-                    Text(
-                      AppLocalizations.of(context)!.findAll,
-                      style: headingBlueTextStyle.copyWith(
-                        fontSize: 14.sp,
-                        fontWeight: bold,
+                    GestureDetector(
+                      onTap: () =>
+                          Navigator.pushNamed(context, '/all-stores'),
+                      child: Text(
+                        AppLocalizations.of(context)!.findAll,
+                        style: headingBlueTextStyle.copyWith(
+                          fontSize: 14.sp,
+                          fontWeight: bold,
+                        ),
                       ),
                     ),
                   ],
@@ -321,54 +325,30 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Spacer(),
-                    Container(
-                      padding: EdgeInsets.all(6.h),
-                      decoration: BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Icon(
-                        Icons.arrow_forward_rounded,
-                        size: 14.h,
-                        color: whiteColor,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/detail-store',
+                          arguments: store.id,
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(6.h),
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Icon(
+                          Icons.arrow_forward_rounded,
+                          size: 14.h,
+                          color: whiteColor,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _deviceChip(Device device) {
-    final isActive = device.status.toUpperCase() == 'ACTIVE';
-    final color = isActive ? primaryColor : Colors.grey;
-
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(6.r),
-        border: Border.all(color: color.withValues(alpha: 0.3), width: 0.5),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 6.w,
-            height: 6.w,
-            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-          ),
-          SizedBox(width: 4.w),
-          Text(
-            device.name,
-            style: primaryTextStyle.copyWith(
-              fontSize: 10.sp,
-              fontWeight: medium,
-              color: color,
             ),
           ),
         ],

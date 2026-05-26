@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:galonku/pages/all_stores_page.dart';
+import 'package:galonku/pages/detail_store_page.dart';
 import 'package:galonku/pages/edit_profile_page.dart';
 import 'package:galonku/pages/sign_in_page.dart';
 import 'package:galonku/pages/splash_page.dart';
@@ -27,6 +29,12 @@ class AppRoute {
         break;
       case '/checkout':
         page = const CheckoutPage();
+        break;
+      case '/detail-store':
+        page = const DetailStorePage();
+        break;
+      case '/all-stores':
+        page = const AllStoresPage();
         break;
       default:
         return null;
