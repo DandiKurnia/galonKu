@@ -3,6 +3,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/l10n/app_localizations.dart';
+import 'package:galonku/providers/map_notifier.dart';
+import 'package:galonku/providers/search_notifier.dart';
+import 'package:galonku/providers/stores_notifier.dart';
 import 'package:galonku/routes/app_route.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +26,11 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return MultiProvider(
-          providers: [Provider.value(value: '')],
+          providers: [
+            ChangeNotifierProvider(create: (_) => StoresNotifier()),
+            ChangeNotifierProvider(create: (_) => SearchNotifier()),
+            ChangeNotifierProvider(create: (_) => MapNotifier()),
+          ],
           child: MaterialApp(
             localizationsDelegates: const [
               AppLocalizations.delegate,
