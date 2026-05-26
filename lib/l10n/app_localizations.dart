@@ -176,6 +176,30 @@ abstract class AppLocalizations {
   /// **'Halo'**
   String get dashboardGreeting;
 
+  /// No description provided for @greetingMorning.
+  ///
+  /// In id, this message translates to:
+  /// **'Selamat Pagi'**
+  String get greetingMorning;
+
+  /// No description provided for @greetingAfternoon.
+  ///
+  /// In id, this message translates to:
+  /// **'Selamat Siang'**
+  String get greetingAfternoon;
+
+  /// No description provided for @greetingEvening.
+  ///
+  /// In id, this message translates to:
+  /// **'Selamat Sore'**
+  String get greetingEvening;
+
+  /// No description provided for @greetingNight.
+  ///
+  /// In id, this message translates to:
+  /// **'Selamat Malam'**
+  String get greetingNight;
+
   /// No description provided for @dashboardSub.
   ///
   /// In id, this message translates to:
@@ -337,6 +361,132 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Belum ada transaksi'**
   String get transactionEmpty;
+
+  /// No description provided for @transactionDetailAppbar.
+  ///
+  /// In id, this message translates to:
+  /// **'Detail Transaksi'**
+  String get transactionDetailAppbar;
+
+  /// No description provided for @orderSection.
+  ///
+  /// In id, this message translates to:
+  /// **'Pesanan'**
+  String get orderSection;
+
+  /// No description provided for @orderItemTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Air Galon (19L)'**
+  String get orderItemTitle;
+
+  /// No description provided for @orderQtyPrice.
+  ///
+  /// In id, this message translates to:
+  /// **'{qty} galon × {price}'**
+  String orderQtyPrice(String qty, String price);
+
+  /// No description provided for @orderTotal.
+  ///
+  /// In id, this message translates to:
+  /// **'Total'**
+  String get orderTotal;
+
+  /// No description provided for @locationSection.
+  ///
+  /// In id, this message translates to:
+  /// **'Lokasi Pengisian'**
+  String get locationSection;
+
+  /// No description provided for @paymentSectionTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pembayaran'**
+  String get paymentSectionTitle;
+
+  /// No description provided for @paymentMethodLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Metode'**
+  String get paymentMethodLabel;
+
+  /// No description provided for @paymentStatusLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Status'**
+  String get paymentStatusLabel;
+
+  /// No description provided for @paymentExpiryLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Berlaku sampai'**
+  String get paymentExpiryLabel;
+
+  /// No description provided for @payNow.
+  ///
+  /// In id, this message translates to:
+  /// **'Bayar Sekarang'**
+  String get payNow;
+
+  /// No description provided for @paymentMethodBankTransfer.
+  ///
+  /// In id, this message translates to:
+  /// **'Transfer Bank'**
+  String get paymentMethodBankTransfer;
+
+  /// No description provided for @paymentMethodEwallet.
+  ///
+  /// In id, this message translates to:
+  /// **'E-Wallet'**
+  String get paymentMethodEwallet;
+
+  /// No description provided for @paymentMethodCreditCard.
+  ///
+  /// In id, this message translates to:
+  /// **'Kartu Kredit'**
+  String get paymentMethodCreditCard;
+
+  /// No description provided for @paymentMethodQris.
+  ///
+  /// In id, this message translates to:
+  /// **'QRIS'**
+  String get paymentMethodQris;
+
+  /// No description provided for @paymentMethodOther.
+  ///
+  /// In id, this message translates to:
+  /// **'Lainnya'**
+  String get paymentMethodOther;
+
+  /// No description provided for @historySection.
+  ///
+  /// In id, this message translates to:
+  /// **'Riwayat'**
+  String get historySection;
+
+  /// No description provided for @waterFillSection.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengisian'**
+  String get waterFillSection;
+
+  /// No description provided for @waterFillItem.
+  ///
+  /// In id, this message translates to:
+  /// **'Galon ke-{index}'**
+  String waterFillItem(String index);
+
+  /// No description provided for @invoiceAppbar.
+  ///
+  /// In id, this message translates to:
+  /// **'Pembayaran'**
+  String get invoiceAppbar;
+
+  /// No description provided for @invoiceLoadFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Gagal memuat halaman pembayaran'**
+  String get invoiceLoadFailed;
 
   /// No description provided for @profileAppbar.
   ///

@@ -210,7 +210,7 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (context, index) => _storeCard(stores[index]),
           ),
         ),
-        SizedBox(height: 50.h),
+        SizedBox(height: 40.h),
       ],
     );
   }
@@ -525,7 +525,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  String _timeGreeting(AppLocalizations l10n) {
+    final hour = DateTime.now().hour;
+    if (hour >= 5 && hour < 11) return l10n.greetingMorning;
+    if (hour >= 11 && hour < 15) return l10n.greetingAfternoon;
+    if (hour >= 15 && hour < 18) return l10n.greetingEvening;
+    return l10n.greetingNight;
+  }
+
   Container header(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
       child: Row(
@@ -535,7 +544,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${AppLocalizations.of(context)!.dashboardGreeting}, Budi!',
+                  _timeGreeting(l10n),
                   style: primaryTextStyle.copyWith(
                     fontSize: 24.sp,
                     fontWeight: bold,

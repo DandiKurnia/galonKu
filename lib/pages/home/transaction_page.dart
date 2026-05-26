@@ -342,7 +342,15 @@ class _TransactionPageState extends State<TransactionPage> {
                     ),
                     SizedBox(height: 4.h),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        await Navigator.pushNamed(
+                          context,
+                          '/transaction-detail',
+                          arguments: tx.id,
+                        );
+                        if (!mounted) return;
+                        await context.read<TransactionProvider>().load();
+                      },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:galonku/pages/all_stores_page.dart';
 import 'package:galonku/pages/detail_store_page.dart';
 import 'package:galonku/pages/edit_profile_page.dart';
+import 'package:galonku/pages/payment_invoice_page.dart';
 import 'package:galonku/pages/sign_in_page.dart';
 import 'package:galonku/pages/splash_page.dart';
 import 'package:galonku/pages/sign_up_page.dart';
 import 'package:galonku/pages/home/main_page.dart';
 import 'package:galonku/pages/checkout_page.dart';
+import 'package:galonku/pages/transaction_detail_page.dart';
 
 class AppRoute {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -35,6 +37,12 @@ class AppRoute {
         break;
       case '/all-stores':
         page = const AllStoresPage();
+        break;
+      case '/transaction-detail':
+        page = const TransactionDetailPage();
+        break;
+      case '/payment-invoice':
+        page = const PaymentInvoicePage();
         break;
       default:
         return null;

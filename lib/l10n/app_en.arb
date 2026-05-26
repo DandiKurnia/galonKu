@@ -13,6 +13,10 @@
   "name": "Full Name",
 
   "dashboardGreeting": "Hello",
+  "greetingMorning": "Good Morning",
+  "greetingAfternoon": "Good Afternoon",
+  "greetingEvening": "Good Evening",
+  "greetingNight": "Good Night",
   "dashboardSub": "Want to fill your gallon today?",
   "headlineOne": "Fill Gallon",
   "headlineTwo": "Easy & Practical",
@@ -49,6 +53,42 @@
   "transactionStatusExpired": "Expired",
   "transactionStatusFailed": "Failed",
   "transactionEmpty": "No transactions yet",
+
+  "transactionDetailAppbar": "Transaction Detail",
+  "orderSection": "Order",
+  "orderItemTitle": "Gallon Water (19L)",
+  "orderQtyPrice": "{qty} gallons × {price}",
+  "@orderQtyPrice": {
+    "placeholders": {
+      "qty": { "type": "String" },
+      "price": { "type": "String" }
+    }
+  },
+  "orderTotal": "Total",
+
+  "locationSection": "Fill Location",
+  "paymentSectionTitle": "Payment",
+  "paymentMethodLabel": "Method",
+  "paymentStatusLabel": "Status",
+  "paymentExpiryLabel": "Valid until",
+  "payNow": "Pay Now",
+  "paymentMethodBankTransfer": "Bank Transfer",
+  "paymentMethodEwallet": "E-Wallet",
+  "paymentMethodCreditCard": "Credit Card",
+  "paymentMethodQris": "QRIS",
+  "paymentMethodOther": "Other",
+
+  "historySection": "History",
+  "waterFillSection": "Filling",
+  "waterFillItem": "Gallon #{index}",
+  "@waterFillItem": {
+    "placeholders": {
+      "index": { "type": "String" }
+    }
+  },
+
+  "invoiceAppbar": "Payment",
+  "invoiceLoadFailed": "Failed to load payment page",
 
   "profileAppbar": "Profile",
   "profileAccount": "Account",

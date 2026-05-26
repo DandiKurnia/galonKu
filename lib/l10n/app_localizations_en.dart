@@ -48,6 +48,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardGreeting => 'Hello';
 
   @override
+  String get greetingMorning => 'Good Morning';
+
+  @override
+  String get greetingAfternoon => 'Good Afternoon';
+
+  @override
+  String get greetingEvening => 'Good Evening';
+
+  @override
+  String get greetingNight => 'Good Night';
+
+  @override
   String get dashboardSub => 'Want to fill your gallon today?';
 
   @override
@@ -130,6 +142,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get transactionEmpty => 'No transactions yet';
+
+  @override
+  String get transactionDetailAppbar => 'Transaction Detail';
+
+  @override
+  String get orderSection => 'Order';
+
+  @override
+  String get orderItemTitle => 'Gallon Water (19L)';
+
+  @override
+  String orderQtyPrice(String qty, String price) {
+    return '$qty gallons × $price';
+  }
+
+  @override
+  String get orderTotal => 'Total';
+
+  @override
+  String get locationSection => 'Fill Location';
+
+  @override
+  String get paymentSectionTitle => 'Payment';
+
+  @override
+  String get paymentMethodLabel => 'Method';
+
+  @override
+  String get paymentStatusLabel => 'Status';
+
+  @override
+  String get paymentExpiryLabel => 'Valid until';
+
+  @override
+  String get payNow => 'Pay Now';
+
+  @override
+  String get paymentMethodBankTransfer => 'Bank Transfer';
+
+  @override
+  String get paymentMethodEwallet => 'E-Wallet';
+
+  @override
+  String get paymentMethodCreditCard => 'Credit Card';
+
+  @override
+  String get paymentMethodQris => 'QRIS';
+
+  @override
+  String get paymentMethodOther => 'Other';
+
+  @override
+  String get historySection => 'History';
+
+  @override
+  String get waterFillSection => 'Filling';
+
+  @override
+  String waterFillItem(String index) {
+    return 'Gallon #$index';
+  }
+
+  @override
+  String get invoiceAppbar => 'Payment';
+
+  @override
+  String get invoiceLoadFailed => 'Failed to load payment page';
 
   @override
   String get profileAppbar => 'Profile';
