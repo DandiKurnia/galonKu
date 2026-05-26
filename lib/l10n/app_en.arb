@@ -82,5 +82,33 @@
   "subtotal": "Subtotal",
   "pay": "Pay",
   "balance": "Balance",
-  "checkoutSuccess": "Purchase successful! Processing water..."
+  "checkoutSuccess": "Purchase successful! Processing water...",
+
+  "allStoresAppbar": "All Stores",
+  "storeOpen": "Open",
+  "storeClosed": "Closed",
+  "storeMachineCount": "{active}/{total} machines",
+  "@storeMachineCount": {
+    "placeholders": {
+      "active": { "type": "String" },
+      "total": { "type": "String" }
+    }
+  },
+  "storeEmpty": "No stores available",
+  "tryAgain": "Try again",
+
+  "detailStoreAppbar": "Store Detail",
+  "detailStoreInvalidId": "Invalid store ID",
+  "detailStoreMachineSection": "Machines ({active}/{total} active)",
+  "@detailStoreMachineSection": {
+    "placeholders": {
+      "active": { "type": "String" },
+      "total": { "type": "String" }
+    }
+  },
+  "detailStoreNoMachine": "No machines yet",
+  "machineActive": "Active",
+  "machineInactive": "Inactive",
+  "openInMaps": "Open in Google Maps",
+  "openMapsFailed": "Unable to open Google Maps"
 }

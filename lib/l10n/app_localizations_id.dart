@@ -220,4 +220,50 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get checkoutSuccess => 'Pembelian berhasil! Memproses air...';
+
+  @override
+  String get allStoresAppbar => 'Lihat Semua';
+
+  @override
+  String get storeOpen => 'Buka';
+
+  @override
+  String get storeClosed => 'Tutup';
+
+  @override
+  String storeMachineCount(String active, String total) {
+    return '$active/$total mesin';
+  }
+
+  @override
+  String get storeEmpty => 'Belum ada toko tersedia';
+
+  @override
+  String get tryAgain => 'Coba lagi';
+
+  @override
+  String get detailStoreAppbar => 'Detail Toko';
+
+  @override
+  String get detailStoreInvalidId => 'ID toko tidak valid';
+
+  @override
+  String detailStoreMachineSection(String active, String total) {
+    return 'Mesin ($active/$total aktif)';
+  }
+
+  @override
+  String get detailStoreNoMachine => 'Belum ada mesin';
+
+  @override
+  String get machineActive => 'Aktif';
+
+  @override
+  String get machineInactive => 'Nonaktif';
+
+  @override
+  String get openInMaps => 'Buka di Google Maps';
+
+  @override
+  String get openMapsFailed => 'Tidak bisa membuka Google Maps';
 }

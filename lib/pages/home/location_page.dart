@@ -186,6 +186,39 @@ class _LocationPageState extends State<LocationPage> {
                 );
               }).toList(),
             ),
+            SizedBox(height: 16.h),
+            SizedBox(
+              width: double.infinity,
+              height: 44.h,
+              child: TextButton.icon(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(
+                    context,
+                    '/detail-store',
+                    arguments: entry.data.id,
+                  );
+                },
+                icon: Icon(
+                  Icons.arrow_forward_rounded,
+                  color: whiteColor,
+                  size: 18.h,
+                ),
+                label: Text(
+                  'Lihat Detail',
+                  style: headingTextStyle.copyWith(
+                    fontSize: 13.sp,
+                    fontWeight: semiBold,
+                  ),
+                ),
+                style: TextButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -272,7 +305,7 @@ class _LocationPageState extends State<LocationPage> {
           );
         }
 
-        final stores = notifier.stores;
+        final stores = notifier.displayedStores;
         if (stores.isEmpty) {
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 24.h),
@@ -424,16 +457,25 @@ class _LocationPageState extends State<LocationPage> {
               ),
             ),
             SizedBox(width: 8.w),
-            Container(
-              padding: EdgeInsets.all(8.h),
-              decoration: BoxDecoration(
-                color: primaryColor,
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              child: Icon(
-                Icons.arrow_forward_rounded,
-                size: 14.h,
-                color: whiteColor,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/detail-store',
+                  arguments: entry.data.id,
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.all(8.h),
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                child: Icon(
+                  Icons.arrow_forward_rounded,
+                  size: 14.h,
+                  color: whiteColor,
+                ),
               ),
             ),
           ],
@@ -449,7 +491,7 @@ class _LocationPageState extends State<LocationPage> {
         final locating = mapNotifier.locating;
 
         final markers = <Marker>[
-          for (final store in storesNotifier.stores)
+          for (final store in storesNotifier.displayedStores)
             Marker(
               point: store.location,
               width: 36,

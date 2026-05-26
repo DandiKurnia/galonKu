@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:galonku/models/sign_in_model.dart';
+import 'package:galonku/models/auth_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,11 +33,7 @@ class AuthService {
     throw Exception(_extractMessage(response.body, 'Gagal masuk'));
   }
 
-  Future<SignInModel> signUp(
-    String name,
-    String email,
-    String password,
-  ) async {
+  Future<SignInModel> signUp(String name, String email, String password) async {
     final response = await _client.post(
       Uri.parse('$_baseUrl/auth/register'),
       headers: {'Content-Type': 'application/json'},

@@ -84,5 +84,33 @@
   "subtotal": "Subtotal",
   "pay": "Bayar",
   "balance": "Saldo",
-  "checkoutSuccess": "Pembelian berhasil! Memproses air..."
+  "checkoutSuccess": "Pembelian berhasil! Memproses air...",
+
+  "allStoresAppbar": "Lihat Semua",
+  "storeOpen": "Buka",
+  "storeClosed": "Tutup",
+  "storeMachineCount": "{active}/{total} mesin",
+  "@storeMachineCount": {
+    "placeholders": {
+      "active": { "type": "String" },
+      "total": { "type": "String" }
+    }
+  },
+  "storeEmpty": "Belum ada toko tersedia",
+  "tryAgain": "Coba lagi",
+
+  "detailStoreAppbar": "Detail Toko",
+  "detailStoreInvalidId": "ID toko tidak valid",
+  "detailStoreMachineSection": "Mesin ({active}/{total} aktif)",
+  "@detailStoreMachineSection": {
+    "placeholders": {
+      "active": { "type": "String" },
+      "total": { "type": "String" }
+    }
+  },
+  "detailStoreNoMachine": "Belum ada mesin",
+  "machineActive": "Aktif",
+  "machineInactive": "Nonaktif",
+  "openInMaps": "Buka di Google Maps",
+  "openMapsFailed": "Tidak bisa membuka Google Maps"
 }
