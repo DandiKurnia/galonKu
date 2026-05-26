@@ -3,6 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
+import 'package:galonku/models/transaction_model.dart';
+import 'package:galonku/providers/transaction_provider.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class TransactionPage extends StatefulWidget {
   const TransactionPage({super.key});
@@ -12,7 +16,6 @@ class TransactionPage extends StatefulWidget {
 }
 
 class _TransactionPageState extends State<TransactionPage> {
-  String _selectedFilter = 'all';
   final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
 
@@ -20,6 +23,10 @@ class _TransactionPageState extends State<TransactionPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<TransactionProvider>().load();
+    });
   }
 
   @override
@@ -36,123 +43,25 @@ class _TransactionPageState extends State<TransactionPage> {
     }
   }
 
-  final List<Map<String, String>> _transactions = const [
-    {
-      'invoice': 'inv-23131',
-      'count': '2',
-      'machine': '01',
-      'date': '20 Mei 2026',
-      'total': 'Rp 12.000',
-      'status': 'success',
-    },
-    {
-      'invoice': 'inv-23120',
-      'count': '1',
-      'machine': '03',
-      'date': '18 Mei 2026',
-      'total': 'Rp 6.000',
-      'status': 'cancelled',
-    },
-    {
-      'invoice': 'inv-23098',
-      'count': '3',
-      'machine': '02',
-      'date': '15 Mei 2026',
-      'total': 'Rp 18.000',
-      'status': 'success',
-    },
-    {
-      'invoice': 'inv-23098',
-      'count': '3',
-      'machine': '02',
-      'date': '15 Mei 2026',
-      'total': 'Rp 18.000',
-      'status': 'cancelled',
-    },
-    {
-      'invoice': 'inv-23098',
-      'count': '3',
-      'machine': '02',
-      'date': '15 Mei 2026',
-      'total': 'Rp 18.000',
-      'status': 'success',
-    },
-    {
-      'invoice': 'inv-23098',
-      'count': '3',
-      'machine': '02',
-      'date': '15 Mei 2026',
-      'total': 'Rp 18.000',
-      'status': 'success',
-    },
-    {
-      'invoice': 'inv-23098',
-      'count': '3',
-      'machine': '02',
-      'date': '15 Mei 2026',
-      'total': 'Rp 18.000',
-      'status': 'cancelled',
-    },
-    {
-      'invoice': 'inv-23098',
-      'count': '3',
-      'machine': '02',
-      'date': '15 Mei 2026',
-      'total': 'Rp 18.000',
-      'status': 'success',
-    },
-    {
-      'invoice': 'inv-23098',
-      'count': '3',
-      'machine': '02',
-      'date': '15 Mei 2026',
-      'total': 'Rp 18.000',
-      'status': 'success',
-    },
-    {
-      'invoice': 'inv-23098',
-      'count': '3',
-      'machine': '02',
-      'date': '15 Mei 2026',
-      'total': 'Rp 18.000',
-      'status': 'cancelled',
-    },
-    {
-      'invoice': 'inv-23098',
-      'count': '3',
-      'machine': '02',
-      'date': '15 Mei 2026',
-      'total': 'Rp 18.000',
-      'status': 'success',
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
-    final filtered = _selectedFilter == 'all'
-        ? _transactions
-        : _transactions.where((tx) => tx['status'] == _selectedFilter).toList();
-
     return Stack(
       children: [
         Positioned.fill(
-          child: ListView.builder(
-            controller: _scrollController,
-            padding: EdgeInsets.only(bottom: 100.h),
-            itemCount: filtered.length + 2,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return header(context);
-              }
-              if (index == 1) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 12.h),
-                  child: filterBar(context),
-                );
-              }
-              return Padding(
-                padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 12.h),
-                child: transactionCard(filtered[index - 2]),
+          child: Consumer<TransactionProvider>(
+            builder: (context, notifier, _) {
+              return CustomScrollView(
+                controller: _scrollController,
+                slivers: [
+                  SliverToBoxAdapter(child: header(context)),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 12.h),
+                      child: filterBar(context, notifier),
+                    ),
+                  ),
+                  ..._buildContent(context, notifier),
+                ],
               );
             },
           ),
@@ -171,55 +80,154 @@ class _TransactionPageState extends State<TransactionPage> {
     );
   }
 
-  Widget filterBar(BuildContext context) {
+  List<Widget> _buildContent(
+    BuildContext context,
+    TransactionProvider notifier,
+  ) {
     final l10n = AppLocalizations.of(context)!;
-    final filters = [
-      {'value': 'all', 'label': l10n.filterAll},
-      {'value': 'success', 'label': l10n.statusTransaction},
-      {'value': 'cancelled', 'label': l10n.cancelTransaction},
-    ];
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.h),
-      child: Row(
-        children: filters.map((f) {
-          final isActive = _selectedFilter == f['value'];
-          return Padding(
-            padding: EdgeInsets.only(right: 8.w),
-            child: GestureDetector(
-              onTap: () => setState(() => _selectedFilter = f['value']!),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
-                decoration: BoxDecoration(
-                  color: isActive ? primaryColor : whiteColor,
-                  borderRadius: BorderRadius.circular(20.r),
-                  border: Border.all(
-                    color: isActive ? primaryColor : backgroundColor3,
+    if (notifier.loading) {
+      return [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Center(
+            child: CircularProgressIndicator(color: primaryColor),
+          ),
+        ),
+      ];
+    }
+
+    if (notifier.error != null) {
+      return [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.error_outline, color: errorColor, size: 40.h),
+                SizedBox(height: 12.h),
+                Text(
+                  notifier.error!,
+                  textAlign: TextAlign.center,
+                  style: secondaryTextStyle.copyWith(fontSize: 12.sp),
+                ),
+                SizedBox(height: 12.h),
+                TextButton(
+                  onPressed: notifier.load,
+                  child: Text(
+                    l10n.tryAgain,
+                    style: primaryTextStyle.copyWith(
+                      fontSize: 12.sp,
+                      fontWeight: semiBold,
+                      color: primaryColor,
+                    ),
                   ),
                 ),
-                child: Text(
-                  f['label']!,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: medium,
-                    color: isActive ? whiteColor : primaryTextColor,
-                  ),
+              ],
+            ),
+          ),
+        ),
+      ];
+    }
+
+    final list = notifier.filteredTransactions;
+    if (list.isEmpty) {
+      return [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Center(
+            child: Text(
+              l10n.transactionEmpty,
+              style: secondaryTextStyle.copyWith(fontSize: 12.sp),
+            ),
+          ),
+        ),
+      ];
+    }
+
+    return [
+      SliverPadding(
+        padding: EdgeInsets.only(bottom: 100.h),
+        sliver: SliverList.separated(
+          itemCount: list.length,
+          separatorBuilder: (_, __) => SizedBox(height: 12.h),
+          itemBuilder: (context, index) => Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: transactionCard(list[index]),
+          ),
+        ),
+      ),
+    ];
+  }
+
+  Widget filterBar(BuildContext context, TransactionProvider notifier) {
+    final l10n = AppLocalizations.of(context)!;
+    final filters = <_FilterChipData>[
+      _FilterChipData(TransactionFilter.all, l10n.filterAll),
+      _FilterChipData(
+        TransactionFilter.pending,
+        l10n.transactionStatusPending,
+      ),
+      _FilterChipData(TransactionFilter.paid, l10n.transactionStatusPaid),
+      _FilterChipData(
+        TransactionFilter.expired,
+        l10n.transactionStatusExpired,
+      ),
+      _FilterChipData(TransactionFilter.failed, l10n.transactionStatusFailed),
+    ];
+
+    return SizedBox(
+      height: 36.h,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        itemCount: filters.length,
+        separatorBuilder: (_, __) => SizedBox(width: 8.w),
+        itemBuilder: (context, index) {
+          final f = filters[index];
+          final isActive = notifier.filter == f.value;
+          return GestureDetector(
+            onTap: () => notifier.setFilter(f.value),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+              decoration: BoxDecoration(
+                color: isActive ? primaryColor : whiteColor,
+                borderRadius: BorderRadius.circular(20.r),
+                border: Border.all(
+                  color: isActive ? primaryColor : backgroundColor3,
+                ),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                f.label,
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: medium,
+                  color: isActive ? whiteColor : primaryTextColor,
                 ),
               ),
             ),
           );
-        }).toList(),
+        },
       ),
     );
   }
 
-  Widget transactionCard(Map<String, String> data) {
+  Widget transactionCard(Datum tx) {
     final l10n = AppLocalizations.of(context)!;
-    final isSuccess = data['status'] == 'success';
-    final statusColor = isSuccess ? successColor : errorColor;
-    final statusLabel = isSuccess
-        ? l10n.statusTransaction
-        : l10n.cancelTransaction;
+    final status = tx.status.toUpperCase();
+    final statusColor = _statusColor(status);
+    final statusLabel = _statusLabel(l10n, status);
+
+    final dateLabel = DateFormat('d MMM y', 'id').format(tx.createdAt);
+    final totalLabel = NumberFormat.currency(
+      locale: 'id',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    ).format(tx.totalPrice);
+    final invoiceLabel = 'INV-${tx.id.toString().padLeft(5, '0')}';
 
     return Container(
       padding: EdgeInsets.all(12.h),
@@ -280,7 +288,10 @@ class _TransactionPageState extends State<TransactionPage> {
                   ),
                   SizedBox(height: 2.h),
                   Text(
-                    l10n.transactionAmount(data['count']!, data['machine']!),
+                    l10n.transactionAmount(
+                      '${tx.totalGalon}',
+                      tx.device?.name ?? '-',
+                    ),
                     style: secondaryTextStyle.copyWith(
                       fontSize: 11.sp,
                       fontWeight: regular,
@@ -296,7 +307,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       ),
                       SizedBox(width: 4.w),
                       Text(
-                        data['date']!,
+                        dateLabel,
                         style: secondaryTextStyle.copyWith(
                           fontSize: 11.sp,
                           fontWeight: regular,
@@ -313,7 +324,7 @@ class _TransactionPageState extends State<TransactionPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  data['invoice']!,
+                  invoiceLabel,
                   style: secondaryTextStyle.copyWith(
                     fontSize: 11.sp,
                     fontWeight: regular,
@@ -323,7 +334,7 @@ class _TransactionPageState extends State<TransactionPage> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      data['total']!,
+                      totalLabel,
                       style: primaryTextStyle.copyWith(
                         fontSize: 13.sp,
                         fontWeight: bold,
@@ -362,6 +373,36 @@ class _TransactionPageState extends State<TransactionPage> {
     );
   }
 
+  Color _statusColor(String status) {
+    switch (status) {
+      case 'PAID':
+        return successColor;
+      case 'PENDING':
+        return const Color(0xffF59E0B);
+      case 'EXPIRED':
+        return secondaryTextColor;
+      case 'FAILED':
+        return errorColor;
+      default:
+        return secondaryTextColor;
+    }
+  }
+
+  String _statusLabel(AppLocalizations l10n, String status) {
+    switch (status) {
+      case 'PAID':
+        return l10n.transactionStatusPaid;
+      case 'PENDING':
+        return l10n.transactionStatusPending;
+      case 'EXPIRED':
+        return l10n.transactionStatusExpired;
+      case 'FAILED':
+        return l10n.transactionStatusFailed;
+      default:
+        return status;
+    }
+  }
+
   Widget header(BuildContext context) {
     return AppBar(
       systemOverlayStyle: const SystemUiOverlayStyle(
@@ -381,4 +422,10 @@ class _TransactionPageState extends State<TransactionPage> {
       scrolledUnderElevation: 0,
     );
   }
+}
+
+class _FilterChipData {
+  final TransactionFilter value;
+  final String label;
+  const _FilterChipData(this.value, this.label);
 }

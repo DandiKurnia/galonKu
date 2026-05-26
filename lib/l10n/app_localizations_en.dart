@@ -117,6 +117,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get showDetail => 'Show Detail';
 
   @override
+  String get transactionStatusPending => 'Pending';
+
+  @override
+  String get transactionStatusPaid => 'Paid';
+
+  @override
+  String get transactionStatusExpired => 'Expired';
+
+  @override
+  String get transactionStatusFailed => 'Failed';
+
+  @override
+  String get transactionEmpty => 'No transactions yet';
+
+  @override
   String get profileAppbar => 'Profile';
 
   @override

@@ -7,6 +7,7 @@ import 'package:galonku/providers/auth_provider.dart';
 import 'package:galonku/providers/map_notifier.dart';
 import 'package:galonku/providers/search_notifier.dart';
 import 'package:galonku/providers/stores_notifier.dart';
+import 'package:galonku/providers/transaction_provider.dart';
 import 'package:galonku/routes/app_route.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => StoresNotifier()),
             ChangeNotifierProvider(create: (_) => SearchNotifier()),
             ChangeNotifierProvider(create: (_) => MapNotifier()),
+            ChangeNotifierProvider(create: (_) => TransactionProvider()),
           ],
           child: MaterialApp(
             localizationsDelegates: const [

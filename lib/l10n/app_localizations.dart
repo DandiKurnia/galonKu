@@ -308,6 +308,36 @@ abstract class AppLocalizations {
   /// **'Lihat Detail'**
   String get showDetail;
 
+  /// No description provided for @transactionStatusPending.
+  ///
+  /// In id, this message translates to:
+  /// **'Menunggu'**
+  String get transactionStatusPending;
+
+  /// No description provided for @transactionStatusPaid.
+  ///
+  /// In id, this message translates to:
+  /// **'Dibayar'**
+  String get transactionStatusPaid;
+
+  /// No description provided for @transactionStatusExpired.
+  ///
+  /// In id, this message translates to:
+  /// **'Kedaluwarsa'**
+  String get transactionStatusExpired;
+
+  /// No description provided for @transactionStatusFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Gagal'**
+  String get transactionStatusFailed;
+
+  /// No description provided for @transactionEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada transaksi'**
+  String get transactionEmpty;
+
   /// No description provided for @profileAppbar.
   ///
   /// In id, this message translates to:
