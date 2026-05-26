@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/l10n/app_localizations.dart';
+import 'package:galonku/providers/auth_provider.dart';
 import 'package:galonku/providers/map_notifier.dart';
 import 'package:galonku/providers/search_notifier.dart';
 import 'package:galonku/providers/stores_notifier.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MultiProvider(
           providers: [
+            ChangeNotifierProvider(create: (_) => AuthProvider()),
             ChangeNotifierProvider(create: (_) => StoresNotifier()),
             ChangeNotifierProvider(create: (_) => SearchNotifier()),
             ChangeNotifierProvider(create: (_) => MapNotifier()),
