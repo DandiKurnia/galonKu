@@ -103,7 +103,7 @@ class _ScanQrPageState extends State<ScanQrPage> {
                 ElevatedButton.icon(
                   onPressed: () {
                     _controller.stop();
-                    Navigator.of(context).pop("Mesin 03 (Mock)");
+                    Navigator.of(context).pop("DEV-1");
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,

@@ -244,7 +244,7 @@ class _LocationPageState extends State<LocationPage> {
               maps(),
               SizedBox(height: 12.h),
               locationStore(),
-              SizedBox(height: 100.h),
+              SizedBox(height: 40.h),
             ],
           ),
         ),

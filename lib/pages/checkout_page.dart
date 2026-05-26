@@ -1,7 +1,10 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
+import 'package:galonku/services/transaction_service.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
@@ -11,8 +14,10 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
+  final TransactionService _service = TransactionService();
   int _quantity = 1;
-  final int _pricePerGallon = 6000;
+  final int _pricePerGallon = 8000;
+  bool _submitting = false;
 
   String _formatCurrency(int value) {
     return value.toString().replaceAllMapped(
@@ -21,12 +26,67 @@ class _CheckoutPageState extends State<CheckoutPage> {
     );
   }
 
+  Future<void> _onPay({
+    required String deviceCode,
+    required int subtotal,
+  }) async {
+    if (_submitting) return;
+
+    if (deviceCode.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Mesin tidak valid')),
+      );
+      return;
+    }
+
+    setState(() => _submitting = true);
+    try {
+      final result = await _service
+          .createTransaction(
+            deviceCode: deviceCode,
+            totalGalon: _quantity,
+          )
+          .timeout(const Duration(seconds: 20));
+
+      if (!mounted) return;
+      final invoiceUrl = result.data.payment?.invoiceUrl;
+      if (invoiceUrl == null || invoiceUrl.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invoice tidak tersedia')),
+        );
+        return;
+      }
+
+      await Navigator.pushNamed(
+        context,
+        '/payment-invoice',
+        arguments: invoiceUrl,
+      );
+      if (!mounted) return;
+      Navigator.pushNamedAndRemoveUntil(context, '/main', (_) => false);
+    } catch (e, stack) {
+      developer.log(
+        'Failed to create transaction',
+        name: 'CheckoutPage',
+        error: e,
+        stackTrace: stack,
+      );
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString().replaceFirst('Exception: ', ''))),
+      );
+    } finally {
+      if (mounted) setState(() => _submitting = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final String? qrData =
         ModalRoute.of(context)?.settings.arguments as String?;
-    final String machineInfo = qrData ?? 'Mesin 01';
+    final String deviceCode = qrData ?? '';
+    final String machineInfo = deviceCode.isEmpty ? 'Mesin 01' : deviceCode;
     final int subtotal = _quantity * _pricePerGallon;
 
     return Scaffold(
@@ -71,7 +131,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ],
             ),
           ),
-          _bottomBar(l10n, subtotal),
+          _bottomBar(l10n, subtotal, deviceCode),
         ],
       ),
     );
@@ -120,7 +180,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ),
             ),
           ),
-          Image.asset('assets/images/galon.png', height: 180.h, fit: BoxFit.contain),
+          Image.asset(
+            'assets/images/galon.png',
+            height: 180.h,
+            fit: BoxFit.contain,
+          ),
         ],
       ),
     );
@@ -332,7 +396,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     );
   }
 
-  Widget _bottomBar(AppLocalizations l10n, int subtotal) {
+  Widget _bottomBar(AppLocalizations l10n, int subtotal, String deviceCode) {
     return Container(
       padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 24.h),
       decoration: BoxDecoration(
@@ -375,16 +439,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
             width: 160.w,
             height: 50.h,
             child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  '/payment',
-                  arguments: {
-                    'amount': subtotal,
-                    'quantity': _quantity,
-                  },
-                );
-              },
+              onPressed: _submitting
+                  ? null
+                  : () => _onPay(deviceCode: deviceCode, subtotal: subtotal),
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryColor,
                 shape: RoundedRectangleBorder(
@@ -392,25 +449,34 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
                 elevation: 0,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    l10n.pay,
-                    style: headingTextStyle.copyWith(
-                      fontSize: 14.sp,
-                      fontWeight: bold,
-                      color: whiteColor,
+              child: _submitting
+                  ? SizedBox(
+                      width: 20.h,
+                      height: 20.h,
+                      child: const CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2.5,
+                      ),
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          l10n.pay,
+                          style: headingTextStyle.copyWith(
+                            fontSize: 14.sp,
+                            fontWeight: bold,
+                            color: whiteColor,
+                          ),
+                        ),
+                        SizedBox(width: 6.w),
+                        Icon(
+                          Icons.arrow_forward_rounded,
+                          color: whiteColor,
+                          size: 18.h,
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(width: 6.w),
-                  Icon(
-                    Icons.arrow_forward_rounded,
-                    color: whiteColor,
-                    size: 18.h,
-                  ),
-                ],
-              ),
             ),
           ),
         ],

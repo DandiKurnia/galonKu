@@ -48,6 +48,18 @@ class AppLocalizationsId extends AppLocalizations {
   String get dashboardGreeting => 'Halo';
 
   @override
+  String get greetingMorning => 'Selamat Pagi';
+
+  @override
+  String get greetingAfternoon => 'Selamat Siang';
+
+  @override
+  String get greetingEvening => 'Selamat Sore';
+
+  @override
+  String get greetingNight => 'Selamat Malam';
+
+  @override
   String get dashboardSub => 'Mau isi galon hari ini?';
 
   @override
@@ -130,6 +142,73 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get transactionEmpty => 'Belum ada transaksi';
+
+  @override
+  String get transactionDetailAppbar => 'Detail Transaksi';
+
+  @override
+  String get orderSection => 'Pesanan';
+
+  @override
+  String get orderItemTitle => 'Air Galon (19L)';
+
+  @override
+  String orderQtyPrice(String qty, String price) {
+    return '$qty galon × $price';
+  }
+
+  @override
+  String get orderTotal => 'Total';
+
+  @override
+  String get locationSection => 'Lokasi Pengisian';
+
+  @override
+  String get paymentSectionTitle => 'Pembayaran';
+
+  @override
+  String get paymentMethodLabel => 'Metode';
+
+  @override
+  String get paymentStatusLabel => 'Status';
+
+  @override
+  String get paymentExpiryLabel => 'Berlaku sampai';
+
+  @override
+  String get payNow => 'Bayar Sekarang';
+
+  @override
+  String get paymentMethodBankTransfer => 'Transfer Bank';
+
+  @override
+  String get paymentMethodEwallet => 'E-Wallet';
+
+  @override
+  String get paymentMethodCreditCard => 'Kartu Kredit';
+
+  @override
+  String get paymentMethodQris => 'QRIS';
+
+  @override
+  String get paymentMethodOther => 'Lainnya';
+
+  @override
+  String get historySection => 'Riwayat';
+
+  @override
+  String get waterFillSection => 'Pengisian';
+
+  @override
+  String waterFillItem(String index) {
+    return 'Galon ke-$index';
+  }
+
+  @override
+  String get invoiceAppbar => 'Pembayaran';
+
+  @override
+  String get invoiceLoadFailed => 'Gagal memuat halaman pembayaran';
 
   @override
   String get profileAppbar => 'Profil';

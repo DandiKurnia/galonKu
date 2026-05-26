@@ -14,6 +14,10 @@
   "name": "Nama Lengkap",
 
   "dashboardGreeting": "Halo",
+  "greetingMorning": "Selamat Pagi",
+  "greetingAfternoon": "Selamat Siang",
+  "greetingEvening": "Selamat Sore",
+  "greetingNight": "Selamat Malam",
   "dashboardSub": "Mau isi galon hari ini?",
   "headlineOne": "Isi Galon",
   "headlineTwo": "Mudah & Praktis",
@@ -51,6 +55,42 @@
   "transactionStatusExpired": "Kedaluwarsa",
   "transactionStatusFailed": "Gagal",
   "transactionEmpty": "Belum ada transaksi",
+
+  "transactionDetailAppbar": "Detail Transaksi",
+  "orderSection": "Pesanan",
+  "orderItemTitle": "Air Galon (19L)",
+  "orderQtyPrice": "{qty} galon × {price}",
+  "@orderQtyPrice": {
+    "placeholders": {
+      "qty": { "type": "String" },
+      "price": { "type": "String" }
+    }
+  },
+  "orderTotal": "Total",
+
+  "locationSection": "Lokasi Pengisian",
+  "paymentSectionTitle": "Pembayaran",
+  "paymentMethodLabel": "Metode",
+  "paymentStatusLabel": "Status",
+  "paymentExpiryLabel": "Berlaku sampai",
+  "payNow": "Bayar Sekarang",
+  "paymentMethodBankTransfer": "Transfer Bank",
+  "paymentMethodEwallet": "E-Wallet",
+  "paymentMethodCreditCard": "Kartu Kredit",
+  "paymentMethodQris": "QRIS",
+  "paymentMethodOther": "Lainnya",
+
+  "historySection": "Riwayat",
+  "waterFillSection": "Pengisian",
+  "waterFillItem": "Galon ke-{index}",
+  "@waterFillItem": {
+    "placeholders": {
+      "index": { "type": "String" }
+    }
+  },
+
+  "invoiceAppbar": "Pembayaran",
+  "invoiceLoadFailed": "Gagal memuat halaman pembayaran",
 
   "profileAppbar": "Profil",
   "profileAccount": "Akun",
