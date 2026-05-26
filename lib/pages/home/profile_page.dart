@@ -4,8 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
 import 'package:galonku/models/user_profile_model.dart';
-import 'package:galonku/services/auth_service.dart';
+import 'package:galonku/providers/auth_provider.dart';
 import 'package:galonku/services/profile_service.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -59,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
       body: _loading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator(color: primaryColor))
           : ListView(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
               children: [
@@ -299,7 +300,7 @@ class _ProfilePageState extends State<ProfilePage> {
           TextButton(
             onPressed: () async {
               Navigator.of(ctx).pop();
-              await AuthService().clearSession();
+              await context.read<AuthProvider>().signOut();
               if (!context.mounted) return;
               Navigator.of(
                 context,

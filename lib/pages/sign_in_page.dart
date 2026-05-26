@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:galonku/config/theme.dart';
 import 'package:galonku/l10n/app_localizations.dart';
-import 'package:galonku/services/auth_service.dart';
-import 'package:galonku/services/sign_in_service.dart';
+import 'package:galonku/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -16,7 +16,6 @@ class _SignInPageState extends State<SignInPage> {
   bool _obscureText = true;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -36,21 +35,16 @@ class _SignInPageState extends State<SignInPage> {
       return;
     }
 
-    setState(() => _isLoading = true);
+    final auth = context.read<AuthProvider>();
+    final ok = await auth.signIn(email, password);
 
-    try {
-      final result = await SignInService().signIn(email, password);
-      await AuthService().saveSession(result);
-
-      if (!mounted) return;
+    if (!mounted) return;
+    if (ok) {
       Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
-    } catch (e) {
-      if (!mounted) return;
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString().replaceFirst('Exception: ', ''))),
+        SnackBar(content: Text(auth.errorMessage ?? 'Gagal masuk')),
       );
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -94,34 +88,39 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget signInButton(BuildContext context) {
-    return SizedBox(
-      height: 50.h,
-      width: double.infinity,
-      child: TextButton(
-        onPressed: _isLoading ? null : _handleSignIn,
-        style: TextButton.styleFrom(
-          backgroundColor: primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
-          ),
-        ),
-        child: _isLoading
-            ? SizedBox(
-                height: 20.h,
-                width: 20.h,
-                child: const CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2,
-                ),
-              )
-            : Text(
-                AppLocalizations.of(context)!.signIn,
-                style: headingTextStyle.copyWith(
-                  fontSize: 16.sp,
-                  fontWeight: medium,
-                ),
+    return Selector<AuthProvider, bool>(
+      selector: (_, auth) => auth.loading,
+      builder: (context, loading, _) {
+        return SizedBox(
+          height: 50.h,
+          width: double.infinity,
+          child: TextButton(
+            onPressed: loading ? null : _handleSignIn,
+            style: TextButton.styleFrom(
+              backgroundColor: primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
               ),
-      ),
+            ),
+            child: loading
+                ? SizedBox(
+                    height: 20.h,
+                    width: 20.h,
+                    child: const CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : Text(
+                    AppLocalizations.of(context)!.signIn,
+                    style: headingTextStyle.copyWith(
+                      fontSize: 16.sp,
+                      fontWeight: medium,
+                    ),
+                  ),
+          ),
+        );
+      },
     );
   }
 
