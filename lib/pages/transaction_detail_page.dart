@@ -157,7 +157,10 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
   Widget _statusHeader(AppLocalizations l10n, TransactionDetailData data) {
     final status = data.status.toUpperCase();
     final color = _statusColor(status);
-    final dateLabel = DateFormat('d MMM y, HH:mm', 'id').format(data.createdAt);
+    final dateLabel = DateFormat(
+      'd MMM y, HH:mm',
+      'id',
+    ).format(data.createdAt.toLocal());
     final invoice = 'INV-${data.id.toString().padLeft(5, '0')}';
 
     return Container(
@@ -373,7 +376,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
               value: DateFormat(
                 'd MMM y, HH:mm',
                 'id',
-              ).format(payment.expiryDate!),
+              ).format(payment.expiryDate!.toLocal()),
             ),
           ],
           if (canPay) ...[
@@ -438,7 +441,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                   ),
                 ),
                 Text(
-                  DateFormat('HH:mm', 'id').format(logs[i].createdAt),
+                  DateFormat('HH:mm', 'id').format(logs[i].createdAt.toLocal()),
                   style: secondaryTextStyle.copyWith(
                     fontSize: 11.sp,
                     fontWeight: regular,
@@ -484,7 +487,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
     final dateLabel = DateFormat(
       'd MMM y, HH:mm',
       'id',
-    ).format(entry.createdAt);
+    ).format(entry.createdAt.toLocal());
 
     return IntrinsicHeight(
       child: Row(

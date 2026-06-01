@@ -221,7 +221,10 @@ class _TransactionPageState extends State<TransactionPage> {
     final statusColor = _statusColor(status);
     final statusLabel = _statusLabel(l10n, status);
 
-    final dateLabel = DateFormat('d MMM y', 'id').format(tx.createdAt);
+    final dateLabel = DateFormat(
+      'd MMM y',
+      'id',
+    ).format(tx.createdAt.toLocal());
     final totalLabel = NumberFormat.currency(
       locale: 'id',
       symbol: 'Rp ',
