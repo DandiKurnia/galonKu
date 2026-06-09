@@ -2,24 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:galonku/models/user_profile_model.dart';
-import 'package:galonku/services/auth_service.dart';
+import 'package:galonku/services/api_client.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 class ProfileService {
-  String get _baseUrl {
-    final baseUrl = dotenv.env['APP_BACKEND'];
-    if (baseUrl == null || baseUrl.isEmpty) {
-      throw StateError('APP_BACKEND missing in .env');
-    }
-    return baseUrl;
-  }
+  ProfileService({ApiClient? apiClient}) : _api = apiClient ?? ApiClient();
 
-  static final client = http.Client();
-  final AuthService _authService = AuthService();
+  final ApiClient _api;
 
   static const _supportedInputExtensions = {
     'jpg',
@@ -33,18 +25,7 @@ class ProfileService {
   };
 
   Future<ProfileModel> getProfile() async {
-    final token = await _authService.getToken();
-    if (token == null || token.isEmpty) {
-      throw Exception('Sesi tidak ditemukan, silakan login kembali');
-    }
-
-    final response = await client.get(
-      Uri.parse('$_baseUrl/profile'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    final response = await _api.get('/profile');
 
     if (response.statusCode == 200) {
       return ProfileModel.fromJson(jsonDecode(response.body));
@@ -59,35 +40,33 @@ class ProfileService {
     String phoneNumber,
     File? imageFile,
   ) async {
-    final token = await _authService.getToken();
-    if (token == null || token.isEmpty) {
-      throw Exception('Sesi tidak ditemukan, silakan login kembali');
-    }
-
-    final request = http.MultipartRequest(
-      'PATCH',
-      Uri.parse('$_baseUrl/profile'),
-    )
-      ..headers['Authorization'] = 'Bearer $token'
-      ..fields['name'] = name
-      ..fields['email'] = email
-      ..fields['phone_number'] = phoneNumber;
-
+    // Konversi gambar sekali di luar builder supaya tidak diulang saat retry.
+    Uint8List? webpBytes;
     if (imageFile != null) {
       _ensureSupportedInput(imageFile.path);
-      final webpBytes = await _convertToWebp(imageFile);
-      request.files.add(
-        http.MultipartFile.fromBytes(
-          'avatar',
-          webpBytes,
-          filename: 'avatar.webp',
-          contentType: MediaType('image', 'webp'),
-        ),
-      );
+      webpBytes = await _convertToWebp(imageFile);
     }
 
-    final streamed = await client.send(request);
-    final response = await http.Response.fromStream(streamed);
+    final uri = Uri.parse('${_api.baseUrl}/profile');
+    final response = await _api.send((token) {
+      final request = http.MultipartRequest('PATCH', uri)
+        ..headers['Authorization'] = 'Bearer $token'
+        ..fields['name'] = name
+        ..fields['email'] = email
+        ..fields['phone_number'] = phoneNumber;
+
+      if (webpBytes != null) {
+        request.files.add(
+          http.MultipartFile.fromBytes(
+            'avatar',
+            webpBytes,
+            filename: 'avatar.webp',
+            contentType: MediaType('image', 'webp'),
+          ),
+        );
+      }
+      return request;
+    });
 
     if (response.statusCode == 200) {
       return ProfileModel.fromJson(jsonDecode(response.body));

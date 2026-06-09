@@ -1,38 +1,17 @@
 import 'dart:convert';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:galonku/models/address_model.dart';
-import 'package:galonku/services/auth_service.dart';
-import 'package:http/http.dart' as http;
+import 'package:galonku/services/api_client.dart';
 
 class AddressService {
-  String get _baseUrl {
-    final baseUrl = dotenv.env['APP_BACKEND'];
-    if (baseUrl == null || baseUrl.isEmpty) {
-      throw StateError('APP_BACKEND missing in .env');
-    }
-    return baseUrl;
-  }
+  AddressService({ApiClient? apiClient}) : _api = apiClient ?? ApiClient();
 
-  static final client = http.Client();
-  final AuthService _authService = AuthService();
+  final ApiClient _api;
 
   Future<AddressModel> getAddresses({int? limit}) async {
-    final token = await _authService.getToken();
-    if (token == null || token.isEmpty) {
-      throw Exception('Sesi tidak ditemukan, silakan login kembali');
-    }
-
-    final uri = Uri.parse('$_baseUrl/address').replace(
-      queryParameters: limit == null ? null : {'limit': '$limit'},
-    );
-
-    final response = await client.get(
-      uri,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
+    final response = await _api.get(
+      '/address',
+      query: limit == null ? null : {'limit': '$limit'},
     );
 
     if (response.statusCode == 200) {
@@ -53,30 +32,8 @@ class AddressService {
     throw Exception(_extractMessage(response.body, 'Gagal memuat alamat'));
   }
 
-  String _extractMessage(String responseBody, String fallback) {
-    try {
-      final jsonResponse = jsonDecode(responseBody);
-      if (jsonResponse is Map && jsonResponse['message'] != null) {
-        final msg = jsonResponse['message'];
-        return msg is List ? msg.join(', ') : msg.toString();
-      }
-    } catch (_) {}
-    return fallback;
-  }
-
   Future<Datum> getAddressById(int id) async {
-    final token = await _authService.getToken();
-    if (token == null || token.isEmpty) {
-      throw Exception('Sesi tidak ditemukan, silakan login kembali');
-    }
-
-    final response = await client.get(
-      Uri.parse('$_baseUrl/address/$id'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    final response = await _api.get('/address/$id');
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> json = jsonDecode(response.body);
@@ -92,5 +49,16 @@ class AddressService {
     }
 
     throw Exception(_extractMessage(response.body, 'Gagal memuat alamat'));
+  }
+
+  String _extractMessage(String responseBody, String fallback) {
+    try {
+      final jsonResponse = jsonDecode(responseBody);
+      if (jsonResponse is Map && jsonResponse['message'] != null) {
+        final msg = jsonResponse['message'];
+        return msg is List ? msg.join(', ') : msg.toString();
+      }
+    } catch (_) {}
+    return fallback;
   }
 }

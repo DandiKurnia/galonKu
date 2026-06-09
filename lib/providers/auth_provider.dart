@@ -26,16 +26,39 @@ class AuthProvider extends ChangeNotifier {
   Future<void> bootstrap() async {
     final token = await _authService.getToken();
     if (token == null || token.isEmpty) {
-      _status = AuthStatus.unauthenticated;
-      _user = null;
-      _token = null;
-      notifyListeners();
+      await _failBootstrap();
       return;
     }
 
-    _token = token;
-    _user = await _authService.getUser();
+    // Access token kadaluarsa bukan berarti logout: coba tukar dengan refresh
+    // token dulu. Hanya kalau refresh juga gagal sesi benar-benar dibersihkan.
+    String validToken = token;
+    if (_authService.isTokenExpired(token)) {
+      try {
+        validToken = await _authService.refreshTokens();
+      } catch (_) {
+        await _failBootstrap();
+        return;
+      }
+    }
+
+    final user = await _authService.getUser();
+    if (user == null) {
+      await _failBootstrap();
+      return;
+    }
+
+    _token = validToken;
+    _user = user;
     _status = AuthStatus.authenticated;
+    notifyListeners();
+  }
+
+  Future<void> _failBootstrap() async {
+    await _authService.clearSession();
+    _status = AuthStatus.unauthenticated;
+    _user = null;
+    _token = null;
     notifyListeners();
   }
 

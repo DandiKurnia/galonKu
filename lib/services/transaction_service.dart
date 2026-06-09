@@ -1,36 +1,16 @@
 import 'dart:convert';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:galonku/models/transaction_detail_model.dart';
 import 'package:galonku/models/transaction_model.dart';
-import 'package:galonku/services/auth_service.dart';
-import 'package:http/http.dart' as http;
+import 'package:galonku/services/api_client.dart';
 
 class TransactionService {
-  String get _baseUrl {
-    final baseUrl = dotenv.env['APP_BACKEND'];
-    if (baseUrl == null || baseUrl.isEmpty) {
-      throw StateError('APP_BACKEND missing in .env');
-    }
-    return baseUrl;
-  }
+  TransactionService({ApiClient? apiClient}) : _api = apiClient ?? ApiClient();
 
-  static final http.Client _client = http.Client();
-  final AuthService _authService = AuthService();
+  final ApiClient _api;
 
   Future<TransactionModel> getTransactions() async {
-    final token = await _authService.getToken();
-    if (token == null || token.isEmpty) {
-      throw Exception('Sesi tidak ditemukan, silakan login kembali');
-    }
-
-    final response = await _client.get(
-      Uri.parse('$_baseUrl/transactions'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    final response = await _api.get('/transactions');
 
     if (response.statusCode == 200) {
       return TransactionModel.fromJson(jsonDecode(response.body));
@@ -40,18 +20,7 @@ class TransactionService {
   }
 
   Future<TransactionDetailModel> getTransactionDetail(int id) async {
-    final token = await _authService.getToken();
-    if (token == null || token.isEmpty) {
-      throw Exception('Sesi tidak ditemukan, silakan login kembali');
-    }
-
-    final response = await _client.get(
-      Uri.parse('$_baseUrl/transactions/$id'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    final response = await _api.get('/transactions/$id');
 
     if (response.statusCode == 200) {
       return TransactionDetailModel.fromJson(jsonDecode(response.body));
@@ -66,17 +35,8 @@ class TransactionService {
     required String deviceCode,
     required int totalGalon,
   }) async {
-    final token = await _authService.getToken();
-    if (token == null || token.isEmpty) {
-      throw Exception('Sesi tidak ditemukan, silakan login kembali');
-    }
-
-    final response = await _client.post(
-      Uri.parse('$_baseUrl/transactions'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
+    final response = await _api.post(
+      '/transactions',
       body: jsonEncode({
         'device_code': deviceCode,
         'total_galon': totalGalon,
