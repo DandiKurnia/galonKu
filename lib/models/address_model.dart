@@ -46,13 +46,15 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
-    name: json["name"],
-    address: json["address"],
-    latitude: json["latitude"]?.toDouble(),
-    longitude: json["longitude"]?.toDouble(),
+    name: json["name"] ?? '',
+    address: json["address"] ?? '',
+    latitude: (json["latitude"] as num?)?.toDouble() ?? 0.0,
+    longitude: (json["longitude"] as num?)?.toDouble() ?? 0.0,
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
-    devices: List<Device>.from(json["devices"].map((x) => Device.fromJson(x))),
+    devices: json["devices"] == null
+        ? []
+        : List<Device>.from(json["devices"].map((x) => Device.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -74,7 +76,7 @@ class Device {
   Device({required this.name, required this.status});
 
   factory Device.fromJson(Map<String, dynamic> json) =>
-      Device(name: json["name"], status: json["status"]);
+      Device(name: json["name"] ?? '', status: json["status"] ?? '');
 
   Map<String, dynamic> toJson() => {"name": name, "status": status};
 }

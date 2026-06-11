@@ -28,14 +28,14 @@ class TransactionProvider extends ChangeNotifier {
         .toList();
   }
 
-  Future<void> load() async {
+  Future<void> load({int? limit}) async {
     _loading = true;
     _error = null;
     notifyListeners();
 
     try {
       final result = await _service
-          .getTransactions()
+          .getTransactions(limit: limit)
           .timeout(const Duration(seconds: 15));
       _transactions = result.data;
       _loading = false;

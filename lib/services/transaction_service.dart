@@ -9,8 +9,11 @@ class TransactionService {
 
   final ApiClient _api;
 
-  Future<TransactionModel> getTransactions() async {
-    final response = await _api.get('/transactions');
+  Future<TransactionModel> getTransactions({int? limit}) async {
+    final response = await _api.get(
+      '/transactions',
+      query: limit == null ? null : {'limit': '$limit'},
+    );
 
     if (response.statusCode == 200) {
       return TransactionModel.fromJson(jsonDecode(response.body));

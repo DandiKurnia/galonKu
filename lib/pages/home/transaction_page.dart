@@ -25,7 +25,7 @@ class _TransactionPageState extends State<TransactionPage> {
     _scrollController.addListener(_onScroll);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      context.read<TransactionProvider>().load();
+      context.read<TransactionProvider>().load(limit: 10);
     });
   }
 
@@ -352,7 +352,7 @@ class _TransactionPageState extends State<TransactionPage> {
                           arguments: tx.id,
                         );
                         if (!mounted) return;
-                        await context.read<TransactionProvider>().load();
+                        await context.read<TransactionProvider>().load(limit: 10);
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
