@@ -40,11 +40,17 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
     _load(args);
   }
 
-  Future<void> _load(int id) async {
-    setState(() {
-      _loading = true;
-      _errorMessage = null;
-    });
+  Future<void> _load(int id, {bool silent = false}) async {
+    if (!silent) {
+      setState(() {
+        _loading = true;
+        _errorMessage = null;
+      });
+    } else {
+      setState(() {
+        _errorMessage = null;
+      });
+    }
 
     try {
       final result = await _service
@@ -107,20 +113,36 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
       return Center(child: CircularProgressIndicator(color: primaryColor));
     }
 
+    final id = ModalRoute.of(context)?.settings.arguments as int?;
+
     if (_errorMessage != null) {
-      return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.error_outline, color: errorColor, size: 40.h),
-            SizedBox(height: 12.h),
-            Text(
-              _errorMessage!,
-              textAlign: TextAlign.center,
-              style: secondaryTextStyle.copyWith(fontSize: 12.sp),
+      return RefreshIndicator(
+        color: primaryColor,
+        onRefresh: () async {
+          if (id != null) {
+            await _load(id, silent: true);
+          }
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 100.h),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height - 200.h,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline, color: errorColor, size: 40.h),
+                  SizedBox(height: 12.h),
+                  Text(
+                    _errorMessage!,
+                    textAlign: TextAlign.center,
+                    style: secondaryTextStyle.copyWith(fontSize: 12.sp),
+                  ),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       );
     }
@@ -128,29 +150,36 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
     final data = _data;
     if (data == null) return const SizedBox.shrink();
 
-    return ListView(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-      children: [
-        _statusHeader(l10n, data),
-        SizedBox(height: 16.h),
-        _orderSection(l10n, data),
-        SizedBox(height: 12.h),
-        if (data.device != null) ...[
-          _locationSection(l10n, data.device!),
+    return RefreshIndicator(
+      color: primaryColor,
+      onRefresh: () async {
+        await _load(data.id, silent: true);
+      },
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+        children: [
+          _statusHeader(l10n, data),
+          SizedBox(height: 16.h),
+          _orderSection(l10n, data),
           SizedBox(height: 12.h),
+          if (data.device != null) ...[
+            _locationSection(l10n, data.device!),
+            SizedBox(height: 12.h),
+          ],
+          if (data.payment != null) ...[
+            _paymentSection(l10n, data.payment!),
+            SizedBox(height: 12.h),
+          ],
+          if (data.waterFillLogs.isNotEmpty) ...[
+            _waterFillSection(l10n, data.waterFillLogs),
+            SizedBox(height: 12.h),
+          ],
+          if (data.transactionHistories.isNotEmpty)
+            _historySection(l10n, data.transactionHistories),
+          SizedBox(height: 24.h),
         ],
-        if (data.payment != null) ...[
-          _paymentSection(l10n, data.payment!),
-          SizedBox(height: 12.h),
-        ],
-        if (data.waterFillLogs.isNotEmpty) ...[
-          _waterFillSection(l10n, data.waterFillLogs),
-          SizedBox(height: 12.h),
-        ],
-        if (data.transactionHistories.isNotEmpty)
-          _historySection(l10n, data.transactionHistories),
-        SizedBox(height: 24.h),
-      ],
+      ),
     );
   }
 

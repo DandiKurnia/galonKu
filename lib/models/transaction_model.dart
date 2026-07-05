@@ -12,17 +12,65 @@ String transactionModelToJson(TransactionModel data) =>
 
 class TransactionModel {
   List<Datum> data;
+  Meta? meta;
 
-  TransactionModel({required this.data});
+  TransactionModel({required this.data, this.meta});
 
-  factory TransactionModel.fromJson(Map<String, dynamic> json) =>
-      TransactionModel(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+  factory TransactionModel.fromJson(Map<String, dynamic> json) {
+    final rawData = json["data"];
+    print('TransactionModel.fromJson: rawData type is ${rawData.runtimeType}');
+    if (rawData is Map<String, dynamic>) {
+      print('TransactionModel.fromJson: meta is ${rawData["meta"]}');
+      return TransactionModel(
+        data: List<Datum>.from(
+          (rawData["items"] as List? ?? []).map((x) => Datum.fromJson(x)),
+        ),
+        meta: rawData["meta"] != null ? Meta.fromJson(rawData["meta"]) : null,
+      );
+    }
+    return TransactionModel(
+      data: List<Datum>.from(
+        (rawData as List? ?? []).map((x) => Datum.fromJson(x)),
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    "data": meta != null
+        ? {
+            "items": List<dynamic>.from(data.map((x) => x.toJson())),
+            "meta": meta!.toJson(),
+          }
+        : List<dynamic>.from(data.map((x) => x.toJson())),
+  };
+}
+
+class Meta {
+  int total;
+  int page;
+  int limit;
+  int totalPages;
+
+  Meta({
+    required this.total,
+    required this.page,
+    required this.limit,
+    required this.totalPages,
+  });
+
+  factory Meta.fromJson(Map<String, dynamic> json) => Meta(
+        total: json["total"] ?? 0,
+        page: json["page"] ?? 1,
+        limit: json["limit"] ?? 10,
+        totalPages: json["total_pages"] ?? json["totalPages"] ?? 1,
       );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
-  };
+        "total": total,
+        "page": page,
+        "limit": limit,
+        "total_pages": totalPages,
+      };
 }
 
 class Datum {

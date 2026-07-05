@@ -9,10 +9,14 @@ class TransactionService {
 
   final ApiClient _api;
 
-  Future<TransactionModel> getTransactions({int? limit}) async {
+  Future<TransactionModel> getTransactions({int? limit, int? page}) async {
+    final Map<String, String> query = {};
+    if (limit != null) query['limit'] = '$limit';
+    if (page != null) query['page'] = '$page';
+
     final response = await _api.get(
       '/transactions',
-      query: limit == null ? null : {'limit': '$limit'},
+      query: query.isEmpty ? null : query,
     );
 
     if (response.statusCode == 200) {

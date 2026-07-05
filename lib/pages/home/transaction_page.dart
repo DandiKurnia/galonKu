@@ -41,6 +41,15 @@ class _TransactionPageState extends State<TransactionPage> {
     if (scrolled != _isScrolled) {
       setState(() => _isScrolled = scrolled);
     }
+
+    final pixels = _scrollController.position.pixels;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    print('TransactionPage._onScroll: pixels=$pixels, maxScroll=$maxScroll');
+
+    if (pixels >= maxScroll - 200) {
+      print('TransactionPage._onScroll: Reached near bottom, calling loadMore');
+      context.read<TransactionProvider>().loadMore(limit: 10);
+    }
   }
 
   @override
@@ -50,18 +59,25 @@ class _TransactionPageState extends State<TransactionPage> {
         Positioned.fill(
           child: Consumer<TransactionProvider>(
             builder: (context, notifier, _) {
-              return CustomScrollView(
-                controller: _scrollController,
-                slivers: [
-                  SliverToBoxAdapter(child: header(context)),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 12.h),
-                      child: filterBar(context, notifier),
+              return RefreshIndicator(
+                onRefresh: () async {
+                  await notifier.load(limit: 10, silent: true);
+                },
+                color: primaryColor,
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  controller: _scrollController,
+                  slivers: [
+                    SliverToBoxAdapter(child: header(context)),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 12.h),
+                        child: filterBar(context, notifier),
+                      ),
                     ),
-                  ),
-                  ..._buildContent(context, notifier),
-                ],
+                    ..._buildContent(context, notifier),
+                  ],
+                ),
               );
             },
           ),
@@ -149,7 +165,7 @@ class _TransactionPageState extends State<TransactionPage> {
 
     return [
       SliverPadding(
-        padding: EdgeInsets.only(bottom: 100.h),
+        padding: EdgeInsets.only(bottom: notifier.loadingMore ? 12.h : 100.h),
         sliver: SliverList.separated(
           itemCount: list.length,
           separatorBuilder: (_, __) => SizedBox(height: 12.h),
@@ -159,6 +175,18 @@ class _TransactionPageState extends State<TransactionPage> {
           ),
         ),
       ),
+      if (notifier.loadingMore)
+        SliverPadding(
+          padding: EdgeInsets.only(bottom: 100.h),
+          sliver: SliverToBoxAdapter(
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.h),
+                child: CircularProgressIndicator(color: primaryColor),
+              ),
+            ),
+          ),
+        ),
     ];
   }
 
