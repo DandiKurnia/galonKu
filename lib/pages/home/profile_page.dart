@@ -73,8 +73,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     _menuItem(
                       icon: Icons.person_outline_rounded,
                       label: l10n.editProfile,
-                      onTap: () =>
-                          Navigator.pushNamed(context, '/edit-profile'),
+                      onTap: () async {
+                        final updated = await Navigator.pushNamed(
+                          context,
+                          '/edit-profile',
+                        );
+                        if (updated == true) {
+                          _loadUser();
+                        }
+                      },
                     ),
                   ],
                 ),
