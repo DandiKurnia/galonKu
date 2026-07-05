@@ -33,6 +33,9 @@
 
   "tileAppbar": "Location",
   "searchLocation": "Search for the nearest location ...",
+  "closeStore": "Close",
+  "openStore": "Open",
+  "device": "Device",
 
   "transactionAppbar": "Transaction History",
   "transactionTitle": "Gallon Water (19L)",

@@ -71,12 +71,12 @@ class Datum {
 
 class Device {
   String name;
-  String status;
+  String statusDevice;
 
-  Device({required this.name, required this.status});
+  Device({required this.name, required this.statusDevice});
 
   factory Device.fromJson(Map<String, dynamic> json) =>
-      Device(name: json["name"] ?? '', status: json["status"] ?? '');
+      Device(name: json["name"] ?? '', statusDevice: json["status_device"] ?? '');
 
-  Map<String, dynamic> toJson() => {"name": name, "status": status};
+  Map<String, dynamic> toJson() => {"name": name, "status_device": statusDevice};
 }

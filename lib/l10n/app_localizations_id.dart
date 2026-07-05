@@ -106,6 +106,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get searchLocation => 'Cari Lokasi terdekat ...';
 
   @override
+  String get closeStore => 'Tutup';
+
+  @override
+  String get openStore => 'Buka';
+
+  @override
+  String get device => 'Mesin';
+
+  @override
   String get transactionAppbar => 'Riwayat Transaksi';
 
   @override

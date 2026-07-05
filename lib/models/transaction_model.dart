@@ -18,9 +18,7 @@ class TransactionModel {
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
     final rawData = json["data"];
-    print('TransactionModel.fromJson: rawData type is ${rawData.runtimeType}');
     if (rawData is Map<String, dynamic>) {
-      print('TransactionModel.fromJson: meta is ${rawData["meta"]}');
       return TransactionModel(
         data: List<Datum>.from(
           (rawData["items"] as List? ?? []).map((x) => Datum.fromJson(x)),

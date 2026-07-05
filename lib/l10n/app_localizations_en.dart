@@ -106,6 +106,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchLocation => 'Search for the nearest location ...';
 
   @override
+  String get closeStore => 'Close';
+
+  @override
+  String get openStore => 'Open';
+
+  @override
+  String get device => 'Device';
+
+  @override
   String get transactionAppbar => 'Transaction History';
 
   @override

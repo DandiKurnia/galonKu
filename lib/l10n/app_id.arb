@@ -35,6 +35,9 @@
 
   "tileAppbar": "Pilih Lokasi",
   "searchLocation": "Cari Lokasi terdekat ...",
+  "closeStore": "Tutup",
+  "openStore": "Buka",
+  "device": "Mesin",
 
   "transactionAppbar": "Riwayat Transaksi",
   "transactionTitle": "Air Galon (19L)",

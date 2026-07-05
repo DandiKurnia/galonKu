@@ -44,10 +44,8 @@ class _TransactionPageState extends State<TransactionPage> {
 
     final pixels = _scrollController.position.pixels;
     final maxScroll = _scrollController.position.maxScrollExtent;
-    print('TransactionPage._onScroll: pixels=$pixels, maxScroll=$maxScroll');
 
     if (pixels >= maxScroll - 200) {
-      print('TransactionPage._onScroll: Reached near bottom, calling loadMore');
       context.read<TransactionProvider>().loadMore(limit: 10);
     }
   }

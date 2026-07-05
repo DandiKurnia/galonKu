@@ -28,7 +28,7 @@ class Datum {
   String deviceCode;
   String qrCodeUrl;
   String name;
-  String status;
+  String statusDevice;
   DateTime lastActive;
   int addressId;
   DateTime createdAt;
@@ -40,7 +40,7 @@ class Datum {
     required this.deviceCode,
     required this.qrCodeUrl,
     required this.name,
-    required this.status,
+    required this.statusDevice,
     required this.lastActive,
     required this.addressId,
     required this.createdAt,
@@ -53,7 +53,7 @@ class Datum {
     deviceCode: json["device_code"],
     qrCodeUrl: json["qr_code_url"],
     name: json["name"],
-    status: json["status"],
+    statusDevice: json["status_device"] ?? '',
     lastActive: DateTime.parse(json["last_active"]),
     addressId: json["address_id"],
     createdAt: DateTime.parse(json["created_at"]),
@@ -66,7 +66,7 @@ class Datum {
     "device_code": deviceCode,
     "qr_code_url": qrCodeUrl,
     "name": name,
-    "status": status,
+    "status_device": statusDevice,
     "last_active": lastActive.toIso8601String(),
     "address_id": addressId,
     "created_at": createdAt.toIso8601String(),

@@ -46,17 +46,14 @@ class TransactionProvider extends ChangeNotifier {
     _currentPage = 1;
 
     try {
-      print('TransactionProvider.load: page=1, limit=${limit ?? 10}');
       final result = await _service
           .getTransactions(limit: limit ?? 10, page: 1)
           .timeout(const Duration(seconds: 15));
       _transactions = result.data;
       _totalPages = result.meta?.totalPages ?? 1;
       _loading = false;
-      print('TransactionProvider.load Success: itemsCount=${_transactions.length}, totalPages=$_totalPages');
       notifyListeners();
     } catch (e) {
-      print('TransactionProvider.load Error: $e');
       _error = e.toString().replaceFirst('Exception: ', '');
       _loading = false;
       notifyListeners();
@@ -64,9 +61,7 @@ class TransactionProvider extends ChangeNotifier {
   }
 
   Future<void> loadMore({int? limit}) async {
-    print('TransactionProvider.loadMore called: _loading=$_loading, _loadingMore=$_loadingMore, _currentPage=$_currentPage, _totalPages=$_totalPages');
     if (_loading || _loadingMore || _currentPage >= _totalPages) {
-      print('TransactionProvider.loadMore: Skipped fetch');
       return;
     }
 
@@ -76,7 +71,6 @@ class TransactionProvider extends ChangeNotifier {
 
     try {
       final nextPage = _currentPage + 1;
-      print('TransactionProvider.loadMore: Fetching page $nextPage, limit=${limit ?? 10}');
       final result = await _service
           .getTransactions(limit: limit ?? 10, page: nextPage)
           .timeout(const Duration(seconds: 15));
@@ -84,10 +78,8 @@ class TransactionProvider extends ChangeNotifier {
       _currentPage = nextPage;
       _totalPages = result.meta?.totalPages ?? 1;
       _loadingMore = false;
-      print('TransactionProvider.loadMore Success: itemsCount=${_transactions.length}, newCurrentPage=$_currentPage, totalPages=$_totalPages');
       notifyListeners();
     } catch (e) {
-      print('TransactionProvider.loadMore Error: $e');
       _error = e.toString().replaceFirst('Exception: ', '');
       _loadingMore = false;
       notifyListeners();

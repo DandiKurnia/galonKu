@@ -217,7 +217,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _storeCard(Datum store) {
     final activeDevices = store.devices
-        .where((d) => d.status.toUpperCase() == 'ACTIVE')
+        .where((d) => d.statusDevice.toUpperCase() == 'ACTIVE')
         .length;
 
     return Container(

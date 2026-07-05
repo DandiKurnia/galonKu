@@ -290,6 +290,24 @@ abstract class AppLocalizations {
   /// **'Cari Lokasi terdekat ...'**
   String get searchLocation;
 
+  /// No description provided for @closeStore.
+  ///
+  /// In id, this message translates to:
+  /// **'Tutup'**
+  String get closeStore;
+
+  /// No description provided for @openStore.
+  ///
+  /// In id, this message translates to:
+  /// **'Buka'**
+  String get openStore;
+
+  /// No description provided for @device.
+  ///
+  /// In id, this message translates to:
+  /// **'Mesin'**
+  String get device;
+
   /// No description provided for @transactionAppbar.
   ///
   /// In id, this message translates to:

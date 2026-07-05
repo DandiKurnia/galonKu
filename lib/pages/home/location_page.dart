@@ -135,7 +135,7 @@ class _LocationPageState extends State<LocationPage> {
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Text(
-                    isOpen ? 'Buka' : 'Tutup',
+                    isOpen ? AppLocalizations.of(context)!.openStore : AppLocalizations.of(context)!.closeStore,
                     style: (isOpen ? successTextStyle : errorTextStyle)
                         .copyWith(fontSize: 10.sp, fontWeight: semiBold),
                   ),
@@ -149,7 +149,7 @@ class _LocationPageState extends State<LocationPage> {
             ),
             SizedBox(height: 12.h),
             Text(
-              'Mesin (${entry.data.devices.length})',
+              '${AppLocalizations.of(context)!.device} (${entry.data.devices.length})',
               style: primaryTextStyle.copyWith(
                 fontSize: 12.sp,
                 fontWeight: semiBold,
@@ -160,7 +160,7 @@ class _LocationPageState extends State<LocationPage> {
               spacing: 6.w,
               runSpacing: 6.h,
               children: entry.data.devices.map((d) {
-                final active = d.status.toUpperCase() == 'ACTIVE';
+                final active = d.statusDevice.toUpperCase() == 'ACTIVE';
                 final color = active ? primaryColor : Colors.grey;
                 return Container(
                   padding: EdgeInsets.symmetric(
@@ -404,7 +404,7 @@ class _LocationPageState extends State<LocationPage> {
                           borderRadius: BorderRadius.circular(6.r),
                         ),
                         child: Text(
-                          isOpen ? 'Buka' : 'Tutup',
+                          isOpen ? AppLocalizations.of(context)!.openStore : AppLocalizations.of(context)!.closeStore,
                           style: (isOpen ? successTextStyle : errorTextStyle)
                               .copyWith(fontSize: 9.sp, fontWeight: semiBold),
                         ),
@@ -420,7 +420,7 @@ class _LocationPageState extends State<LocationPage> {
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                    ),
                   SizedBox(height: 6.h),
                   Row(
                     children: [
@@ -445,7 +445,7 @@ class _LocationPageState extends State<LocationPage> {
                       ),
                       SizedBox(width: 2.w),
                       Text(
-                        '${entry.data.devices.length} mesin',
+                        '${entry.data.devices.length} ${AppLocalizations.of(context)!.device.toLowerCase()}',
                         style: primaryTextStyle.copyWith(
                           fontSize: 11.sp,
                           fontWeight: medium,

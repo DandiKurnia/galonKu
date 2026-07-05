@@ -150,9 +150,11 @@ class _AllStoresPageState extends State<AllStoresPage> {
   Widget _storeCard(Datum store) {
     final l10n = AppLocalizations.of(context)!;
     final activeDevices = store.devices
-        .where((d) => d.status.toUpperCase() == 'ACTIVE')
+        .where((d) => d.statusDevice.toUpperCase() == 'ACTIVE')
         .length;
-    final isOpen = activeDevices > 0;
+    final hour = DateTime.now().hour;
+    final timeOpen = hour >= 9 && hour < 21;
+    final isOpen = timeOpen && activeDevices > 0;
 
     return GestureDetector(
       onTap: () {

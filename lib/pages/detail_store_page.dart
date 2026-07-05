@@ -147,7 +147,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
     if (store == null) return const SizedBox.shrink();
 
     final activeDevices = store.devices
-        .where((d) => d.status.toUpperCase() == 'ACTIVE')
+        .where((d) => d.statusDevice.toUpperCase() == 'ACTIVE')
         .length;
 
     return SingleChildScrollView(
@@ -245,7 +245,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
               spacing: 8.w,
               runSpacing: 8.h,
               children: store.devices.map((d) {
-                final active = d.status.toUpperCase() == 'ACTIVE';
+                final active = d.statusDevice.toUpperCase() == 'ACTIVE';
                 final color = active ? primaryColor : Colors.grey;
                 return Container(
                   padding: EdgeInsets.symmetric(

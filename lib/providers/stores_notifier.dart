@@ -11,7 +11,12 @@ class StoreEntry {
 
   StoreEntry({required this.data, required this.location});
 
-  bool get isOpen => data.devices.any((d) => d.status.toUpperCase() == 'ACTIVE');
+  bool get isOpen {
+    final hour = DateTime.now().hour;
+    final timeOpen = hour >= 9 && hour < 21;
+    final hasActiveDevice = data.devices.any((d) => d.statusDevice.toUpperCase() == 'ACTIVE');
+    return timeOpen && hasActiveDevice;
+  }
 }
 
 class StoresNotifier extends ChangeNotifier {
@@ -101,7 +106,7 @@ class StoresNotifier extends ChangeNotifier {
       return;
     }
     for (final e in entries) {
-      e.distanceKm = _distance.as(LengthUnit.Kilometer, origin, e.location);
+      e.distanceKm = _distance.as(LengthUnit.Meter, origin, e.location) / 1000.0;
     }
     entries.sort((a, b) {
       final aDist = a.distanceKm ?? double.infinity;
